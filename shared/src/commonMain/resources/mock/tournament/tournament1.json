@@ -1,0 +1,8 @@
+{
+  "id": "tournament1",
+  "name": "Tournament 1",
+  "owner": {
+    "id": "user1",
+    "name": "User 1"
+  }
+}

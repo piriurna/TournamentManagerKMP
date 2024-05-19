@@ -1,0 +1,23 @@
+{
+  "id": "match1",
+  "homeTeam": {
+    "id": "team1",
+    "name": "Team 1",
+    "owner": {
+      "id": "user1",
+      "name": "User 1"
+    }
+  },
+  "awayTeam": {
+    "id": "team2",
+    "name": "Team 2",
+    "owner": {
+      "id": "user2",
+      "name": "User 2"
+    }
+  },
+  "winnerId": null,
+  "homeGoals": 1,
+  "awayGoals": 0,
+  "status": "LIVE"
+}
