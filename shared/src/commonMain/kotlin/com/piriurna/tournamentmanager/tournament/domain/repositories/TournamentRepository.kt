@@ -1,16 +1,33 @@
 package com.piriurna.tournamentmanager.tournament.domain.repositories
 
-import com.piriurna.tournamentmanager.tournament.data.models.ApiMatch
-import com.piriurna.tournamentmanager.tournament.data.models.ApiTournament
-import com.piriurna.tournamentmanager.tournament.data.models.ApiUser
+import com.piriurna.tournamentmanager.tournament.domain.models.Match
+import com.piriurna.tournamentmanager.tournament.domain.models.Team
+import com.piriurna.tournamentmanager.tournament.domain.models.Tournament
+import com.piriurna.tournamentmanager.tournament.domain.models.User
+
 
 interface TournamentRepository {
 
-    fun getUserInfo(id: String): ApiUser
+    //=======================
+    // USER
+    //=======================
+    fun getUserInfo(id: String): User
 
-    fun getUserTournaments(userId: String): List<ApiTournament>
+    fun getUserTournaments(userId: String): List<Tournament>
 
-    fun getTournament(tournamentId: String): ApiTournament
+    fun getUserTeams(userId: String): List<Team>
 
-    fun getTournamentMatches(tournamentId: String): List<ApiMatch>
+    fun getUserMatches(userId: String): List<Match>
+
+
+    //===================
+    // TOURNAMENT
+    //===================
+    fun getTournament(tournamentId: String): Tournament
+
+    fun getTournamentMatches(tournamentId: String): List<Match>
+
+    fun getTournamentTeams(tournamentId: String)
+
+
 }
