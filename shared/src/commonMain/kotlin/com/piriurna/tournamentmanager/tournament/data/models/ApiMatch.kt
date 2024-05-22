@@ -1,5 +1,8 @@
 package com.piriurna.tournamentmanager.tournament.data.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ApiMatch(
     val id: String,
     val homeApiTeam: ApiTeam,
