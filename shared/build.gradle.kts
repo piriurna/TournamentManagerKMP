@@ -1,7 +1,10 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     kotlin("plugin.serialization") version "1.9.24"
+    id("com.codingfeline.buildkonfig") version "0.15.1"
 }
 
 kotlin {
@@ -25,13 +28,44 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.dependencies {
-            implementation(libs.gson)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.kotlinx.coroutines.core)
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.gson)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.kotlinx.coroutines.core)
+
+                // KTOR
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.client.encoding)
+
+                // firebase
+                implementation("dev.gitlive:firebase-auth:1.12.0")
+            }
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.okhttp)
+            }
+        }
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+            dependencies {
+                implementation(libs.ktor.client.darwin)
+            }
         }
     }
 }
@@ -45,5 +79,13 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+buildkonfig {
+    packageName = "com.piriurna.tournamentmanager"
+
+    defaultConfigs {
+        buildConfigField(STRING, "API_URL", "https://fifa-cups-backend.onrender.com/api/v1/")
     }
 }
