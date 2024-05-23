@@ -42,7 +42,12 @@ kotlin {
                 implementation(libs.ktor.client.encoding)
 
                 // firebase
-                implementation("dev.gitlive:firebase-auth:1.12.0")
+                implementation(libs.gitlive.firebase.auth)
+
+                // koin
+                implementation(libs.koin.core)
+                implementation(libs.koin.test)
+                implementation(libs.koin.android)
             }
         }
         commonTest.dependencies {
