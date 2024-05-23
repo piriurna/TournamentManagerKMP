@@ -3,8 +3,6 @@ package com.piriurna.tournamentmanager.android.dashboard.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,10 +17,6 @@ fun DashboardScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "This is the dashboard")
-
-        Button(onClick = onLogout) {
-            Text(text = "Logout here")
-        }
+        
     }
 }

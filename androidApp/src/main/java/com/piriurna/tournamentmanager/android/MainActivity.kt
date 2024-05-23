@@ -13,10 +13,6 @@ import com.google.firebase.auth.auth
 import com.google.firebase.initialize
 import com.piriurna.tournamentmanager.android.navigation.AppNavGraph
 
-data class AppState(
-    val isLoading: Boolean = false,
-    val isError: Boolean = false
-)
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
@@ -25,6 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Firebase.initialize(this)
         auth = Firebase.auth
+
         setContent {
             MyApplicationTheme {
                 Surface(
@@ -32,7 +29,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavGraph(
-                        appState = AppState(),
                         auth = auth
                     )
                 }

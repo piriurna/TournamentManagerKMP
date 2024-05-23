@@ -23,15 +23,11 @@ class LoginViewModel(
     fun onAuthenticate() {
         viewModelScope.launch {
             val user = firebaseAuth?.currentUser
-            if(user != null) {
-                // Go to homepage
-            } else {
+            if(user == null) {
                 firebaseAuth
                     ?.createUserWithEmailAndPassword(uiState.value.email, uiState.value.password)
                     ?.addOnCompleteListener {
-                        if(it.isSuccessful) {
-                            // goToHomepage
-                        } else {
+                        if(!it.isSuccessful) {
                             loginWithUser()
                         }
                     }
