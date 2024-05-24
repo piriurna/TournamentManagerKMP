@@ -1,11 +1,9 @@
 package com.piriurna.tournamentmanager.android.login.components
 
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.piriurna.tournamentmanager.android.common.BaseViewModel
 import com.piriurna.tournamentmanager.android.common.UiState
 import com.piriurna.tournamentmanager.domain.GlobalNavigator
-import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import com.piriurna.tournamentmanager.domain.usecases.AppResult
 import com.piriurna.tournamentmanager.domain.usecases.AuthenticateUserUseCase
 import dev.gitlive.firebase.auth.FirebaseUser
@@ -26,7 +24,7 @@ class LoginViewModel(
     override fun initialState() = LoginUiState()
     fun onAuthenticate() {
         viewModelScope.launch {
-            authenticateUserUseCase(uiState.value.email, uiState.value.password).collectLatest {
+            authenticateUserUseCase(uiState.value.email, uiState.value.email, uiState.value.password).collectLatest {
                 when(it) {
                     is AppResult.Success -> GlobalNavigator.login(it.data)
 

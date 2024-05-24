@@ -1,7 +1,5 @@
 package com.piriurna.tournamentmanager.domain.usecases
 
-import com.piriurna.tournamentmanager.data.ApiResult
-import com.piriurna.tournamentmanager.domain.models.User
 import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import dev.gitlive.firebase.auth.FirebaseUser
@@ -12,11 +10,16 @@ class AuthenticateUserUseCase(
     private val tournamentRepository: TournamentRepository,
     private val firebaseService: FirebaseService
 ) {
-    suspend operator fun invoke(email: String, nickname: String): Flow<AppResult<FirebaseUser>> {
+    suspend operator fun invoke(email: String, nickname: String, password: String): Flow<AppResult<FirebaseUser>> {
         return flow {
             emit(AppResult.Loading())
 
-            val firebaseRegisterResult = firebaseService.authenticateUser(email, nickname)
+            firebaseService.getLoggedInUser()?.let {
+                emit(AppResult.Success(it))
+                return@flow
+            }
+
+            val firebaseRegisterResult = firebaseService.authenticateUser(email, password)
 
             if(firebaseRegisterResult?.user == null){
                 emit(AppResult.Error("Failed to create user in firebase"))
