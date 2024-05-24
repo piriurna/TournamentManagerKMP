@@ -8,13 +8,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import kotlin.reflect.KClass
 
 interface UiState
 abstract class BaseViewModel<T>(
-    private val navController: NavController
 ): ViewModel() where T: UiState{
+    private lateinit var navController: NavController
 
+    fun initializeNavController(navController: NavController) {
+        this.navController = navController
+    }
     abstract fun initialState(): T
 
     private val _uiState = mutableStateOf(this.initialState())
@@ -34,26 +38,25 @@ abstract class BaseViewModel<T>(
 
 class BaseViewModelFactory<T : UiState>(
     private val navController: NavController,
-    private val viewModelClass: KClass<out BaseViewModel<T>>,
-    private val dependencies: (NavController) -> BaseViewModel<T>
+    private val creator: () -> BaseViewModel<T>
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(viewModelClass.java)) {
-            return dependencies(navController) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+    override fun <VM : ViewModel> create(modelClass: Class<VM>): VM {
+        val viewModel = creator.invoke()
+        viewModel.initializeNavController(navController)
+
+        return viewModel as VM
     }
 }
 
 @Composable
 inline fun <reified VM : BaseViewModel<T>, T : UiState> customViewModelFactory(
     navController: NavController,
-    noinline creator: (NavController) -> VM
+    noinline creator: () -> VM
 ): VM {
     val factory = remember {
-        BaseViewModelFactory(navController, VM::class, creator)
+        BaseViewModelFactory(navController, creator)
     }
     return viewModel(factory = factory)
 }

@@ -14,9 +14,8 @@ data class AppUiState(
 ): UiState
 
 class MainViewModel(
-    private val firebaseService: FirebaseService,
-    navController: NavController
-): BaseViewModel<AppUiState>(navController) {
+    private val firebaseService: FirebaseService
+): BaseViewModel<AppUiState>() {
     override fun initialState() = AppUiState()
 
     init {

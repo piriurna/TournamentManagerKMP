@@ -12,9 +12,8 @@ data class ProfileUiState(
 ): UiState
 
 class ProfileViewModel(
-    private val firebaseService: FirebaseService,
-    navController: NavController
-): BaseViewModel<ProfileUiState>(navController) {
+    private val firebaseService: FirebaseService
+): BaseViewModel<ProfileUiState>() {
 
     override fun initialState() = ProfileUiState()
     fun logout() {

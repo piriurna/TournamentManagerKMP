@@ -17,7 +17,7 @@ class FifaCupsApiImpl(
     private val firebaseService: FirebaseService
 ): FifaCupsApi {
 
-    override suspend fun registerUser(createUserRequestBody: CreateUserRequestBody): ApiResult<ApiUser> {
+    override suspend fun registerUser(createUserRequestBody: CreateUserRequestBody): ApiResult<String> { //TODO: TEMPORARY STRING RETURNING FROM API
         val authToken = firebaseService.getAuthToken()
             ?: return ApiResult.Error("No Auth Token", status = 401)
 
@@ -37,7 +37,7 @@ class FifaCupsApiImpl(
 
     }
 
-    override suspend fun registerTeam(createTeamRequestBody: CreateTeamRequestBody): ApiResult<ApiTeam> {
+    override suspend fun registerTeam(createTeamRequestBody: CreateTeamRequestBody): ApiResult<String> {
         val authToken = firebaseService.getAuthToken()
             ?: return ApiResult.Error("No Auth Token", status = 401)
 

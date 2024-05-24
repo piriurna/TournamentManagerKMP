@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity(), GlobalNavigationHandler {
             val context = LocalContext.current
             viewModel = customViewModelFactory(navController = navController) {
                 val firebaseService = (context.applicationContext as MyApplication).firebaseService
-                MainViewModel(firebaseService, it)
+                MainViewModel(firebaseService)
             }
             GlobalNavigator.registerHandler(this)
             MyApplicationTheme {
