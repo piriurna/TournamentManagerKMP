@@ -1,5 +1,6 @@
 package com.piriurna.tournamentmanager.data.services
 
+import com.piriurna.tournamentmanager.domain.GlobalNavigator
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.AuthResult
@@ -29,5 +30,6 @@ class FirebaseServiceImpl: FirebaseService {
 
     override suspend fun logOutUser() {
         Firebase.auth.signOut()
+        GlobalNavigator.logout()
     }
 }

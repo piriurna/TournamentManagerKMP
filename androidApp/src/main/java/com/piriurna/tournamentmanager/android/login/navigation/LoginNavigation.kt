@@ -1,15 +1,28 @@
 package com.piriurna.tournamentmanager.android.login.navigation
 
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.google.firebase.auth.FirebaseAuth
+import com.piriurna.tournamentmanager.android.MyApplication
+import com.piriurna.tournamentmanager.android.common.customViewModelFactory
 import com.piriurna.tournamentmanager.android.login.components.LoginPage
 import com.piriurna.tournamentmanager.android.login.components.LoginViewModel
+import dev.gitlive.firebase.auth.FirebaseUser
 
 const val LoginRegisterDestination = "LoginAndRegisterDestination"
-fun NavGraphBuilder.loginNavigation(firebaseAuth: FirebaseAuth?) {
+fun NavGraphBuilder.loginNavigation(navController: NavController, onAuthSuccess: (FirebaseUser?) -> Unit) {
 
     composable(LoginRegisterDestination) {
-        LoginPage(viewModel = LoginViewModel(firebaseAuth))
+        val context = LocalContext.current
+        LoginPage(
+            viewModel = customViewModelFactory(navController = navController) {
+                LoginViewModel(
+                    (context.applicationContext as MyApplication).firebaseService,
+                    it
+                )
+            },
+            onAuthSuccess = onAuthSuccess
+        )
     }
 }

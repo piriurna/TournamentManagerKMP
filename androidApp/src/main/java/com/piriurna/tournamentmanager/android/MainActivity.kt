@@ -7,32 +7,56 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-import com.google.firebase.initialize
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.piriurna.tournamentmanager.android.common.customViewModelFactory
 import com.piriurna.tournamentmanager.android.navigation.AppNavGraph
+import com.piriurna.tournamentmanager.data.services.FirebaseServiceImpl
+import com.piriurna.tournamentmanager.domain.GlobalNavigationHandler
+import com.piriurna.tournamentmanager.domain.GlobalNavigator
+import dev.gitlive.firebase.auth.FirebaseUser
 
+class MainActivity : ComponentActivity(), GlobalNavigationHandler {
 
-class MainActivity : ComponentActivity() {
-    private lateinit var auth: FirebaseAuth
+    private lateinit var navController: NavHostController
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Firebase.initialize(this)
-        auth = Firebase.auth
-
         setContent {
+            navController = rememberNavController()
+            val context = LocalContext.current
+            viewModel = customViewModelFactory(navController = navController) {
+                val firebaseService = (context.applicationContext as MyApplication).firebaseService
+                MainViewModel(firebaseService, it)
+            }
+            GlobalNavigator.registerHandler(this)
             MyApplicationTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavGraph(
-                        auth = auth
+                        navController = navController,
+                        appUiState = viewModel.uiState.value,
+                        updateLoggedInUser = viewModel::onUserChange
                     )
                 }
             }
         }
+    }
+
+    override fun logout(user: FirebaseUser?) {
+        viewModel.onUserChange(user)
+    }
+
+    override fun login(user: FirebaseUser?) {
+        viewModel.onUserChange(user)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        GlobalNavigator.unregisterHandler()
     }
 }

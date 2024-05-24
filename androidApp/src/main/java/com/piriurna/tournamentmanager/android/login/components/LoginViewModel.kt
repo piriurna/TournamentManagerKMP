@@ -1,62 +1,52 @@
 package com.piriurna.tournamentmanager.android.login.components
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.auth.FirebaseAuth
+import androidx.navigation.NavController
+import com.piriurna.tournamentmanager.android.common.BaseViewModel
+import com.piriurna.tournamentmanager.android.common.UiState
+import com.piriurna.tournamentmanager.domain.GlobalNavigator
+import com.piriurna.tournamentmanager.domain.services.FirebaseService
+import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
 data class LoginUiState(
     val email: String = "",
-    val password: String = ""
-)
+    val password: String = "",
+    val loggedInUser: FirebaseUser? = null
+): UiState
 
 class LoginViewModel(
-    private val firebaseAuth: FirebaseAuth?
-): ViewModel() {
+    private val firebaseService: FirebaseService,
+    navController: NavController
+): BaseViewModel<LoginUiState>(navController) {
 
-    private val _uiState = mutableStateOf(LoginUiState())
-    val uiState: State<LoginUiState> = _uiState
-
-
-    fun onAuthenticate() {
+    override fun initialState() = LoginUiState()
+    fun onAuthenticate(onAuthSuccess: (FirebaseUser?) -> Unit) {
         viewModelScope.launch {
-            val user = firebaseAuth?.currentUser
-            if(user == null) {
-                firebaseAuth
-                    ?.createUserWithEmailAndPassword(uiState.value.email, uiState.value.password)
-                    ?.addOnCompleteListener {
-                        if(!it.isSuccessful) {
-                            loginWithUser()
-                        }
-                    }
-                    ?.addOnFailureListener {
-                        loginWithUser()
-                    }
+            if(firebaseService.getLoggedInUser() == null) {
+                GlobalNavigator.login(
+                    firebaseService.authenticateUser(
+                        uiState.value.email,
+                        uiState.value.password
+                    )?.user
+                )
             }
         }
     }
 
-    private fun loginWithUser() {
-        firebaseAuth
-            ?.signInWithEmailAndPassword(uiState.value.email, uiState.value.password)
-            ?.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    // go to homepage
-                }
-            }
-    }
-
     fun onEmailChange(email: String) {
-        _uiState.value = _uiState.value.copy(
-            email = email
+        updateUiState(
+            uiState.value.copy(
+                email = email
+            )
         )
     }
 
     fun onPasswordChange(password: String) {
-        _uiState.value = _uiState.value.copy(
-            password = password
+        updateUiState(
+            uiState.value.copy(
+                password = password
+            )
         )
     }
 }

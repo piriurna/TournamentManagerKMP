@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 @Composable
 fun DashboardScreen(
     modifier: Modifier = Modifier,
-    onLogout: () -> Unit
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
