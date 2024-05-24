@@ -6,30 +6,34 @@ import com.piriurna.tournamentmanager.android.common.BaseViewModel
 import com.piriurna.tournamentmanager.android.common.UiState
 import com.piriurna.tournamentmanager.domain.GlobalNavigator
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
+import com.piriurna.tournamentmanager.domain.usecases.AppResult
+import com.piriurna.tournamentmanager.domain.usecases.AuthenticateUserUseCase
 import dev.gitlive.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 data class LoginUiState(
     val email: String = "",
     val password: String = "",
-    val loggedInUser: FirebaseUser? = null
+    val loggedInUser: FirebaseUser? = null,
+    val error: String? = null
 ): UiState
 
 class LoginViewModel(
-    private val firebaseService: FirebaseService,
-    navController: NavController
-): BaseViewModel<LoginUiState>(navController) {
+    private val authenticateUserUseCase: AuthenticateUserUseCase
+): BaseViewModel<LoginUiState>() {
 
     override fun initialState() = LoginUiState()
-    fun onAuthenticate(onAuthSuccess: (FirebaseUser?) -> Unit) {
+    fun onAuthenticate() {
         viewModelScope.launch {
-            if(firebaseService.getLoggedInUser() == null) {
-                GlobalNavigator.login(
-                    firebaseService.authenticateUser(
-                        uiState.value.email,
-                        uiState.value.password
-                    )?.user
-                )
+            authenticateUserUseCase(uiState.value.email, uiState.value.password).collectLatest {
+                when(it) {
+                    is AppResult.Success -> GlobalNavigator.login(it.data)
+
+                    is AppResult.Loading -> {}
+
+                    is AppResult.Error -> {updateUiState(uiState.value.copy(error= it.message))}
+                }
             }
         }
     }

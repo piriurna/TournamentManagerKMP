@@ -18,11 +18,9 @@ fun NavGraphBuilder.loginNavigation(navController: NavController, onAuthSuccess:
         LoginPage(
             viewModel = customViewModelFactory(navController = navController) {
                 LoginViewModel(
-                    (context.applicationContext as MyApplication).firebaseService,
-                    it
+                    (context.applicationContext as MyApplication).createUserUseCase,
                 )
-            },
-            onAuthSuccess = onAuthSuccess
+            }
         )
     }
 }

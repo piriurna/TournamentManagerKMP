@@ -15,7 +15,6 @@ import dev.gitlive.firebase.auth.FirebaseUser
 @Composable
 fun LoginPage(
     viewModel: LoginViewModel,
-    onAuthSuccess : (FirebaseUser?) -> Unit
 ) {
     val uiState = viewModel.uiState.value
     
@@ -28,11 +27,12 @@ fun LoginPage(
         
         TextField(value = uiState.email, onValueChange = viewModel::onEmailChange)
         TextField(value = uiState.password, onValueChange = viewModel::onPasswordChange, visualTransformation = PasswordVisualTransformation())
-        Button(onClick = {
-            viewModel.onAuthenticate(onAuthSuccess)
-        }) {
+        Button(onClick = viewModel::onAuthenticate) {
             Text(text = "Login With user and password")
         }
+
+        if(uiState.error != null)
+            Text(text = uiState.error)
         
         
     }
