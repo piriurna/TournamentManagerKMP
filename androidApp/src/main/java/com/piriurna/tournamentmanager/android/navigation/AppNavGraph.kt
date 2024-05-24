@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.piriurna.tournamentmanager.android.AppUiState
+import com.piriurna.tournamentmanager.android.createteam.navigation.createTeamNavigation
 import com.piriurna.tournamentmanager.android.dashboard.navigation.DashboardDestination
 import com.piriurna.tournamentmanager.android.dashboard.navigation.dashboardNavigation
 import com.piriurna.tournamentmanager.android.login.navigation.LoginRegisterDestination
@@ -61,6 +62,8 @@ fun AppNavGraph(
             loginNavigation(navController) { updateLoggedInUser(it) }
 
             dashboardNavigation(navController)
+
+            createTeamNavigation(navController)
 
             profileNavigation(navController)
         }
