@@ -1,4 +1,4 @@
-package com.piriurna.tournamentmanager.android.navigation
+package com.piriurna.tournamentmanager.android.navigation.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -18,15 +18,13 @@ import com.piriurna.tournamentmanager.android.dashboard.navigation.DashboardDest
 import com.piriurna.tournamentmanager.android.dashboard.navigation.dashboardNavigation
 import com.piriurna.tournamentmanager.android.login.navigation.LoginRegisterDestination
 import com.piriurna.tournamentmanager.android.login.navigation.loginNavigation
-import com.piriurna.tournamentmanager.android.navigation.components.BottomNavigation
+import com.piriurna.tournamentmanager.android.navigation.BottomNavigationItemUi
 import com.piriurna.tournamentmanager.android.profile.navigation.profileNavigation
-import dev.gitlive.firebase.auth.FirebaseUser
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController = rememberNavController(),
-    appUiState: AppUiState,
-    updateLoggedInUser: (FirebaseUser?) -> Unit
+    appUiState: AppUiState
 ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
 
@@ -59,7 +57,7 @@ fun AppNavGraph(
             navController = navController,
             startDestination = DashboardDestination
         ) {
-            loginNavigation(navController) { updateLoggedInUser(it) }
+            loginNavigation(navController)
 
             dashboardNavigation(navController)
 

@@ -7,6 +7,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import com.piriurna.tournamentmanager.android.R
 
 
 @Composable
@@ -18,7 +20,7 @@ fun CreateTeamScreen(
         TextField(value = uiState.teamName, onValueChange = viewModel::updateTeamName)
         TextField(value = uiState.teamImage, onValueChange = viewModel::updateImageUrl)
         Button(onClick = viewModel::createTeam) {
-            Text("Create Team")
+            Text(stringResource(R.string.create_team))
         }
 
         if(uiState.error != null)

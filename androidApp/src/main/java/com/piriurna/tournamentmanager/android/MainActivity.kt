@@ -11,8 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.piriurna.tournamentmanager.android.common.customViewModelFactory
-import com.piriurna.tournamentmanager.android.navigation.AppNavGraph
-import com.piriurna.tournamentmanager.data.services.FirebaseServiceImpl
+import com.piriurna.tournamentmanager.android.navigation.components.AppNavGraph
 import com.piriurna.tournamentmanager.domain.GlobalNavigationHandler
 import com.piriurna.tournamentmanager.domain.GlobalNavigator
 import dev.gitlive.firebase.auth.FirebaseUser
@@ -39,8 +38,7 @@ class MainActivity : ComponentActivity(), GlobalNavigationHandler {
                 ) {
                     AppNavGraph(
                         navController = navController,
-                        appUiState = viewModel.uiState.value,
-                        updateLoggedInUser = viewModel::onUserChange
+                        appUiState = viewModel.uiState.value
                     )
                 }
             }

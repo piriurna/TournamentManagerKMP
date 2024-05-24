@@ -9,11 +9,12 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import dev.gitlive.firebase.auth.FirebaseUser
+import com.piriurna.tournamentmanager.android.R
 
 @Composable
-fun LoginPage(
+fun LoginScreen(
     viewModel: LoginViewModel,
 ) {
     val uiState = viewModel.uiState.value
@@ -28,7 +29,7 @@ fun LoginPage(
         TextField(value = uiState.email, onValueChange = viewModel::onEmailChange)
         TextField(value = uiState.password, onValueChange = viewModel::onPasswordChange, visualTransformation = PasswordVisualTransformation())
         Button(onClick = viewModel::onAuthenticate) {
-            Text(text = "Login With user and password")
+            Text(text = stringResource(R.string.login_with_user_and_password))
         }
 
         if(uiState.error != null)
