@@ -1,4 +1,4 @@
-package com.piriurna.tournamentmanager.android.createteam.navigation
+package com.piriurna.tournamentmanager.android.team.createteam.navigation
 
 object CreateTeamNavigation {
 

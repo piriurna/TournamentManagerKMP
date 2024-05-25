@@ -1,4 +1,4 @@
-package com.piriurna.tournamentmanager.android.createteam.components
+package com.piriurna.tournamentmanager.android.team.createteam.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button

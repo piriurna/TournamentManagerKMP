@@ -1,4 +1,4 @@
-package com.piriurna.tournamentmanager.android.createteam.components
+package com.piriurna.tournamentmanager.android.team.createteam.components
 
 import androidx.lifecycle.viewModelScope
 import com.piriurna.tournamentmanager.android.common.BaseViewModel
