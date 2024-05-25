@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import com.piriurna.tournamentmanager.android.R
 import com.piriurna.tournamentmanager.android.dashboard.navigation.DashboardDestination
 import com.piriurna.tournamentmanager.android.profile.navigation.ProfileDestination
+import com.piriurna.tournamentmanager.android.tournament.navigation.TournamentDestinations
+import com.piriurna.tournamentmanager.android.tournament.navigation.TournamentDestinations.TournamentsOverviewDestination
 
 sealed class BottomNavigationItemUi(
     @DrawableRes val icon: Int,
@@ -26,6 +28,6 @@ sealed class BottomNavigationItemUi(
     data object Tournaments: BottomNavigationItemUi(
         icon = R.drawable.ic_tournament,
         text = R.string.tournaments,
-        destination = ""
+        destination = TournamentsOverviewDestination
     )
 }
