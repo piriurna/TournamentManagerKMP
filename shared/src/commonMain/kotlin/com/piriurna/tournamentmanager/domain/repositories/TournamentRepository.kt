@@ -12,13 +12,20 @@ interface TournamentRepository {
 
 
     //=======================
-    // TEAM
+    // USER
     //=======================
     suspend fun registerUser(email: String, nickname: String): Result<User>
+
     //=======================
     // TEAM
     //=======================
     suspend fun createTeam(name: String, imageUrl: String): Result<Team>
 
+    suspend fun getUserTeam(): Result<Team?>
 
+
+    //=======================
+    // Tournament
+    //=======================
+    suspend fun getTournamentsForUser(): Result<List<Tournament>>
 }

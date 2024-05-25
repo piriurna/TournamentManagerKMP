@@ -1,16 +1,21 @@
 package com.piriurna.tournamentmanager.data.api
 
+import com.piriurna.tournamentmanager.BuildKonfig
 import com.piriurna.tournamentmanager.data.client
 import com.piriurna.tournamentmanager.data.ApiResult
 import com.piriurna.tournamentmanager.data.api.models.CreateTeamRequestBody
 import com.piriurna.tournamentmanager.data.api.models.CreateUserRequestBody
+import com.piriurna.tournamentmanager.data.api.models.tournament.TournamentListResponse
 import com.piriurna.tournamentmanager.data.bodyOrError
+import com.piriurna.tournamentmanager.data.models.ApiPlayer
+import com.piriurna.tournamentmanager.data.models.ApiTeam
+import com.piriurna.tournamentmanager.data.models.ApiTournament
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import io.ktor.client.request.bearerAuth
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.request.url
-import io.ktor.http.isSuccess
 
 class FifaCupsApiImpl(
     private val firebaseService: FirebaseService
@@ -46,6 +51,42 @@ class FifaCupsApiImpl(
             .bodyOrError<String>()
         } catch (e: Exception) {
             ApiResult.Error("error registering team: ${e.message}", status = 500)
+        }
+    }
+
+    override suspend fun getUserTeams(): ApiResult<List<ApiTeam>> {
+        val authToken = firebaseService.getAuthToken()
+            ?: return ApiResult.Error("No Auth Token", status = 401)
+
+        return if(BuildKonfig.MOCK_API) {
+            val team = ApiTeam(id = "team1Id", players = emptyList(), owner = ApiPlayer(id = "", name = ""), name = "My Team Name")
+            ApiResult.Success(listOf(team))
+        } else try {
+            client.get {
+                url("user/teams")
+                bearerAuth(authToken)
+            }
+            .bodyOrError<List<ApiTeam>>()
+        } catch (e: Exception) {
+            ApiResult.Error("error registering team: ${e.message}", status = 500)
+        }
+    }
+
+    override suspend fun getTournamentsForUser(): ApiResult<TournamentListResponse> {
+        val authToken = firebaseService.getAuthToken()
+            ?: return ApiResult.Error("No Auth Token", status = 401)
+
+        return if(BuildKonfig.MOCK_API) {
+           val tournament = ApiTournament(id = "123", name = "Tournament Mock", owner = ApiPlayer(id = "owner1", name = "Owner 1"))
+            ApiResult.Success(TournamentListResponse(tournaments = listOf(tournament) ))
+        } else try {
+            client.get {
+                url("tournament")
+                bearerAuth(authToken)
+            }
+            .bodyOrError<TournamentListResponse>()
+        } catch (e: Exception) {
+            ApiResult.Error("error getting user tournaments: ${e.message}", status = 500)
         }
     }
 }

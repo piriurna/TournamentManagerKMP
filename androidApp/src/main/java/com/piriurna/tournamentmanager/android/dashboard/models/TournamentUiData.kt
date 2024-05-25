@@ -1,12 +1,14 @@
 package com.piriurna.tournamentmanager.android.dashboard.models
 
 import com.piriurna.tournamentmanager.domain.models.Match
+import com.piriurna.tournamentmanager.domain.models.Team
+import com.piriurna.tournamentmanager.domain.models.Tournament
 import com.piriurna.tournamentmanager.domain.models.User
 
 class TournamentInfoUiData(
     val name: String,
     val status: Match.MatchStatus,
-    val registeredPlayers: List<User>,
+    val registeredTeams: List<Team>,
     val tournamentDate: String
 ) {
 
@@ -21,4 +23,14 @@ class TournamentInfoUiData(
         Match.MatchStatus.PAST -> "Ended"
         Match.MatchStatus.PRESENT -> tournamentDate
     }
+}
+
+
+fun Tournament.toUiData(): TournamentInfoUiData {
+    return TournamentInfoUiData(
+        name = name,
+        status = matches.firstOrNull()?.status?:Match.MatchStatus.PRESENT, // TODO: FIX
+        tournamentDate = "04-05-2000", // TODO: FIX
+        registeredTeams = teams
+    )
 }

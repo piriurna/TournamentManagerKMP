@@ -1,6 +1,6 @@
 package com.piriurna.tournamentmanager.domain.models
 
-data class Owner(
+data class Player(
     val id: String,
     val name: String
 )

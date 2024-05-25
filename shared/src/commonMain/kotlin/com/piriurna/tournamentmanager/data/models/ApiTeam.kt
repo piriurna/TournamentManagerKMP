@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class ApiTeam(
     val id: String,
     val name: String,
-    val owner: ApiOwner
+    val owner: ApiPlayer,
+    val players: List<ApiPlayer>
 )

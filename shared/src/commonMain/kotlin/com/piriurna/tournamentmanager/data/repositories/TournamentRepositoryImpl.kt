@@ -4,9 +4,11 @@ import com.piriurna.tournamentmanager.data.ApiResult
 import com.piriurna.tournamentmanager.data.api.FifaCupsApi
 import com.piriurna.tournamentmanager.data.api.models.CreateTeamRequestBody
 import com.piriurna.tournamentmanager.data.api.models.CreateUserRequestBody
-import com.piriurna.tournamentmanager.data.mappers.toUser
-import com.piriurna.tournamentmanager.domain.models.Owner
+import com.piriurna.tournamentmanager.data.mappers.toTeam
+import com.piriurna.tournamentmanager.data.mappers.toTournament
+import com.piriurna.tournamentmanager.domain.models.Player
 import com.piriurna.tournamentmanager.domain.models.Team
+import com.piriurna.tournamentmanager.domain.models.Tournament
 import com.piriurna.tournamentmanager.domain.models.User
 import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
 
@@ -23,9 +25,25 @@ class TournamentRepositoryImpl(
 
     override suspend fun createTeam(name: String, imageUrl: String): Result<Team> {
         return when(val team = fifaCupsApi.registerTeam(CreateTeamRequestBody(name, imageUrl))) {
-            is ApiResult.Success -> Result.success(Team(name = team.result!!, id = "", owner = Owner(id = "", name = "")))
+            is ApiResult.Success -> Result.success(Team(name = team.result!!, id = "", owner = Player(id = "", name = ""), players = emptyList()))
 
             is ApiResult.Error -> Result.failure(Throwable(team.message))
+        }
+    }
+
+    override suspend fun getUserTeam(): Result<Team?> {
+        return when(val response = fifaCupsApi.getUserTeams()) {
+            is ApiResult.Success -> Result.success(response.result?.firstOrNull()?.toTeam())
+
+            is ApiResult.Error -> Result.failure(Throwable(response.message))
+        }
+    }
+
+    override suspend fun getTournamentsForUser(): Result<List<Tournament>> {
+        return when(val response = fifaCupsApi.getTournamentsForUser()) {
+            is ApiResult.Success -> Result.success(response.result?.tournaments?.map { it.toTournament() }?: emptyList())
+
+            is ApiResult.Error -> Result.failure(Throwable(response.message))
         }
     }
 }
