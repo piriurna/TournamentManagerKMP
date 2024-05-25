@@ -1,5 +1,6 @@
 package com.piriurna.tournamentmanager.domain.usecases
 
+import com.piriurna.tournamentmanager.data.ApiResult
 import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import dev.gitlive.firebase.auth.FirebaseUser
@@ -21,18 +22,24 @@ class AuthenticateUserUseCase(
 
             val firebaseRegisterResult = firebaseService.authenticateUser(email, password)
 
-            if(firebaseRegisterResult?.user == null){
-                emit(AppResult.Error("Failed to create user in firebase"))
+            if(firebaseRegisterResult is ApiResult.Success) {
+                firebaseRegisterResult.result!!
+                val registerUserResult =
+                    tournamentRepository.registerUser(email = email, nickname = nickname)
+
+                when {
+                    registerUserResult.isSuccess -> emit(AppResult.Success(firebaseRegisterResult.result.user!!))
+
+                    registerUserResult.isFailure -> emit(AppResult.Error(registerUserResult.exceptionOrNull()?.message))
+                }
+            } else if(firebaseRegisterResult is ApiResult.Error){
+                emit(AppResult.Error(firebaseRegisterResult.message))
                 return@flow
             }
 
-            val result = tournamentRepository.registerUser(email = email, nickname = nickname)
 
-            when {
-                result.isSuccess -> emit(AppResult.Success(firebaseRegisterResult.user!!))
 
-                result.isFailure -> emit(AppResult.Error(result.exceptionOrNull()?.message))
-            }
+
         }
     }
 }

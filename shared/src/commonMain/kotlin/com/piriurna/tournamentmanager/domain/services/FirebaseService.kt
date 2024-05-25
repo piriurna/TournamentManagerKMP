@@ -1,10 +1,11 @@
 package com.piriurna.tournamentmanager.domain.services
 
+import com.piriurna.tournamentmanager.data.ApiResult
 import dev.gitlive.firebase.auth.AuthResult
 import dev.gitlive.firebase.auth.FirebaseUser
 
 interface FirebaseService {
-    suspend fun authenticateUser(email: String, password: String): AuthResult?
+    suspend fun authenticateUser(email: String, password: String): ApiResult<AuthResult>
 
     suspend fun getAuthToken(): String?
 
