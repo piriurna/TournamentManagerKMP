@@ -3,7 +3,7 @@ package com.piriurna.tournamentmanager.android.dashboard.components
 import androidx.lifecycle.viewModelScope
 import com.piriurna.tournamentmanager.android.common.BaseViewModel
 import com.piriurna.tournamentmanager.android.common.UiState
-import com.piriurna.tournamentmanager.android.createteam.navigation.CreateTeamNavigation.CreateTeamHomePageDestination
+import com.piriurna.tournamentmanager.android.team.createteam.navigation.CreateTeamNavigation.CreateTeamHomePageDestination
 import com.piriurna.tournamentmanager.domain.models.Team
 import com.piriurna.tournamentmanager.domain.models.Tournament
 import com.piriurna.tournamentmanager.domain.usecases.AppResult

@@ -13,7 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.piriurna.tournamentmanager.android.AppUiState
-import com.piriurna.tournamentmanager.android.createteam.navigation.createTeamNavigation
+import com.piriurna.tournamentmanager.android.team.createteam.navigation.createTeamNavigation
 import com.piriurna.tournamentmanager.android.dashboard.navigation.DashboardDestination
 import com.piriurna.tournamentmanager.android.dashboard.navigation.dashboardNavigation
 import com.piriurna.tournamentmanager.android.login.navigation.LoginRegisterDestination
@@ -24,8 +24,10 @@ import com.piriurna.tournamentmanager.android.profile.navigation.profileNavigati
 @Composable
 fun AppNavGraph(
     navController: NavHostController = rememberNavController(),
-    appUiState: AppUiState
-) {
+    appUiState: AppUiState,
+    destinationsWithBottomSheet: List<BottomNavigationItemUi> = listOf(BottomNavigationItemUi.Home, BottomNavigationItemUi.Tournaments, BottomNavigationItemUi.Profile),
+
+    ) {
     val backStackEntry = navController.currentBackStackEntryAsState()
 
     val currentDestination by remember {
@@ -43,12 +45,14 @@ fun AppNavGraph(
 
     Scaffold(
         bottomBar = {
-            appUiState.loggedInUser?.let {
-                BottomNavigation(
-                    items = listOf(BottomNavigationItemUi.Home, BottomNavigationItemUi.Profile),
-                    onNavigate = { navController.navigate(it) },
-                    currentDestination = currentDestination?:""
-                )
+            if(currentDestination in destinationsWithBottomSheet.map { it.destination }) {
+                appUiState.loggedInUser?.let {
+                    BottomNavigation(
+                        items = destinationsWithBottomSheet,
+                        onNavigate = { navController.navigate(it) },
+                        currentDestination = currentDestination?:""
+                    )
+                }
             }
         },
     ) { paddingValues ->

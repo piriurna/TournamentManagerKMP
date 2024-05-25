@@ -58,10 +58,7 @@ class FifaCupsApiImpl(
         val authToken = firebaseService.getAuthToken()
             ?: return ApiResult.Error("No Auth Token", status = 401)
 
-        return if(BuildKonfig.MOCK_API) {
-            val team = ApiTeam(id = "team1Id", players = emptyList(), owner = ApiPlayer(id = "", name = ""), name = "My Team Name")
-            ApiResult.Success(listOf(team))
-        } else try {
+        return try {
             client.get {
                 url("user/teams")
                 bearerAuth(authToken)
@@ -76,10 +73,7 @@ class FifaCupsApiImpl(
         val authToken = firebaseService.getAuthToken()
             ?: return ApiResult.Error("No Auth Token", status = 401)
 
-        return if(BuildKonfig.MOCK_API) {
-           val tournament = ApiTournament(id = "123", name = "Tournament Mock", owner = ApiPlayer(id = "owner1", name = "Owner 1"))
-            ApiResult.Success(TournamentListResponse(tournaments = listOf(tournament) ))
-        } else try {
+        return try {
             client.get {
                 url("tournament")
                 bearerAuth(authToken)

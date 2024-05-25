@@ -35,7 +35,9 @@ fun ApiTournament.toTournament(): Tournament {
         id = id,
         name = name,
         owner = owner.toPlayer(),
-        groups = emptyList(), // TODO: FIX
-        matches = emptyList()
+        matches = emptyList(),
+        date = startDate,
+        teams = assignedTeams.map { it.toTeam() },
+        status = status
     )
 }
