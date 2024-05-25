@@ -1,3 +1,4 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.BOOLEAN
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
@@ -30,7 +31,6 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(libs.gson)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.coroutines.core)
 
@@ -93,5 +93,6 @@ buildkonfig {
 
     defaultConfigs {
         buildConfigField(STRING, "API_URL", "https://fifa-cups-backend.onrender.com/api/v1/")
+        buildConfigField(BOOLEAN, "MOCK_API", "true")
     }
 }
