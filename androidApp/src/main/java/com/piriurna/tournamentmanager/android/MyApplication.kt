@@ -7,11 +7,12 @@ import com.piriurna.tournamentmanager.data.repositories.TournamentRepositoryImpl
 import com.piriurna.tournamentmanager.data.services.FirebaseServiceImpl
 import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
-import com.piriurna.tournamentmanager.domain.usecases.AuthenticateUserUseCase
+import com.piriurna.tournamentmanager.domain.usecases.RegisterUserUseCase
 import com.piriurna.tournamentmanager.domain.usecases.CreateTeamUseCase
 import com.piriurna.tournamentmanager.domain.usecases.GetNextTournamentForUserUseCase
 import com.piriurna.tournamentmanager.domain.usecases.GetTournamentsByDateUseCase
 import com.piriurna.tournamentmanager.domain.usecases.GetUserTeamUseCase
+import com.piriurna.tournamentmanager.domain.usecases.LoginUserUseCase
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.initialize
 
@@ -29,8 +30,12 @@ class MyApplication: Application() {
         TournamentRepositoryImpl(fifaCupsApi)
     }
 
-    val createUserUseCase: AuthenticateUserUseCase by lazy {
-        AuthenticateUserUseCase(tournamentRepository, firebaseService)
+    val createUserUseCase: RegisterUserUseCase by lazy {
+        RegisterUserUseCase(tournamentRepository, firebaseService)
+    }
+
+    val loginUserUseCase: LoginUserUseCase by lazy {
+        LoginUserUseCase(firebaseService)
     }
     val createTeamUseCase: CreateTeamUseCase by lazy {
         CreateTeamUseCase(tournamentRepository)

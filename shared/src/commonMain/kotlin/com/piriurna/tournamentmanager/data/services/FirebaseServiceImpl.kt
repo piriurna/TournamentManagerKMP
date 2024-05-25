@@ -8,33 +8,39 @@ import dev.gitlive.firebase.auth.AuthResult
 import dev.gitlive.firebase.auth.FirebaseAuthException
 import dev.gitlive.firebase.auth.FirebaseAuthInvalidCredentialsException
 import dev.gitlive.firebase.auth.FirebaseAuthUserCollisionException
+import dev.gitlive.firebase.auth.FirebaseAuthWeakPasswordException
 import dev.gitlive.firebase.auth.FirebaseUser
 import dev.gitlive.firebase.auth.auth
 
 class FirebaseServiceImpl: FirebaseService {
-    override suspend fun authenticateUser(email: String, password: String): ApiResult<AuthResult> {
-        return runExpectingFirebaseExceptions(email, password) {
+
+    override suspend fun registerUser(email: String, password: String): ApiResult<AuthResult> {
+        return try {
             val authResult = Firebase.auth.createUserWithEmailAndPassword(email, password)
             ApiResult.Success(authResult)
+        } catch (e: FirebaseAuthUserCollisionException) {
+            ApiResult.Error(e.message?:"Email already taken", 400)
+        } catch (e: FirebaseAuthWeakPasswordException) {
+            ApiResult.Error(e.message?:"Password is too weak", 400)
         }
     }
 
-    private suspend fun runExpectingFirebaseExceptions(
-        email: String,
-        password: String,
-        action: suspend () -> ApiResult<AuthResult>
-    ): ApiResult<AuthResult> {
+    override suspend fun authenticateUser(email: String, password: String): ApiResult<AuthResult> {
         return try {
-            action()
-        } catch (e: FirebaseAuthUserCollisionException) {
-            runExpectingFirebaseExceptions(email, password) {
-                val existingAuthResult = Firebase.auth.signInWithEmailAndPassword(email, password)
-                ApiResult.Success(existingAuthResult)
-            }
+            val existingAuthResult = Firebase.auth.signInWithEmailAndPassword(email, password)
+            ApiResult.Success(existingAuthResult)
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            ApiResult.Error("Wrong Email/Password", 400)
+            ApiResult.Error(e.message?:"Wrong Email/Password", 400)
         } catch (e: FirebaseAuthException) {
-            ApiResult.Error("Error authenticating User", 400)
+            ApiResult.Error(e.message?:"Error authenticating User", 400)
+        }
+    }
+
+    override suspend fun deleteUserRegistration(): ApiResult<Unit> {
+        return if(Firebase.auth.currentUser?.delete() != null) {
+            ApiResult.Success(Unit)
+        } else {
+            ApiResult.Error("Error deleting user", status = 500)
         }
     }
     override suspend fun getAuthToken(): String? {

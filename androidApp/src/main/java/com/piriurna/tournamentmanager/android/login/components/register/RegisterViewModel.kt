@@ -1,30 +1,32 @@
-package com.piriurna.tournamentmanager.android.login.components
+package com.piriurna.tournamentmanager.android.login.components.register
 
 import androidx.lifecycle.viewModelScope
 import com.piriurna.tournamentmanager.android.common.BaseViewModel
 import com.piriurna.tournamentmanager.android.common.UiState
+import com.piriurna.tournamentmanager.android.login.navigation.LoginDestinations.LoginDestination
 import com.piriurna.tournamentmanager.domain.GlobalNavigator
 import com.piriurna.tournamentmanager.domain.usecases.AppResult
-import com.piriurna.tournamentmanager.domain.usecases.AuthenticateUserUseCase
+import com.piriurna.tournamentmanager.domain.usecases.RegisterUserUseCase
 import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-data class LoginUiState(
+data class RegisterUiState(
     val email: String = "",
+    val nickname: String = "",
     val password: String = "",
     val loggedInUser: FirebaseUser? = null,
     val error: String? = null
 ): UiState
 
-class LoginViewModel(
-    private val authenticateUserUseCase: AuthenticateUserUseCase
-): BaseViewModel<LoginUiState>() {
+class RegisterViewModel(
+    private val registerUserUseCase: RegisterUserUseCase
+): BaseViewModel<RegisterUiState>() {
 
-    override fun initialState() = LoginUiState()
+    override fun initialState() = RegisterUiState()
     fun onAuthenticate() {
         viewModelScope.launch {
-            authenticateUserUseCase(uiState.value.email, uiState.value.email, uiState.value.password).collectLatest {
+            registerUserUseCase(uiState.value.email, uiState.value.email, uiState.value.password).collectLatest {
                 when(it) {
                     is AppResult.Success -> GlobalNavigator.login(it.data)
 
@@ -43,6 +45,13 @@ class LoginViewModel(
             )
         )
     }
+    fun onNicknameChange(nickname: String) {
+        updateUiState(
+            uiState.value.copy(
+                nickname = nickname
+            )
+        )
+    }
 
     fun onPasswordChange(password: String) {
         updateUiState(
@@ -50,5 +59,9 @@ class LoginViewModel(
                 password = password
             )
         )
+    }
+
+    fun goToLogin() {
+        navigateToDestination(LoginDestination)
     }
 }

@@ -26,7 +26,7 @@ fun ApiTeam.toTeam(): Team {
 
 fun ApiPlayer.toPlayer(): Player {
     return Player(
-        id, name
+        id, nickname
     )
 }
 

@@ -6,18 +6,31 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.piriurna.tournamentmanager.android.MyApplication
 import com.piriurna.tournamentmanager.android.common.customViewModelFactory
-import com.piriurna.tournamentmanager.android.login.components.LoginScreen
-import com.piriurna.tournamentmanager.android.login.components.LoginViewModel
+import com.piriurna.tournamentmanager.android.login.components.login.LoginScreen
+import com.piriurna.tournamentmanager.android.login.components.login.LoginViewModel
+import com.piriurna.tournamentmanager.android.login.components.register.RegisterScreen
+import com.piriurna.tournamentmanager.android.login.components.register.RegisterViewModel
+import com.piriurna.tournamentmanager.android.login.navigation.LoginDestinations.LoginDestination
+import com.piriurna.tournamentmanager.android.login.navigation.LoginDestinations.RegisterDestination
 
-const val LoginRegisterDestination = "LoginAndRegisterDestination"
 fun NavGraphBuilder.loginNavigation(navController: NavController) {
 
-    composable(LoginRegisterDestination) {
+    composable(RegisterDestination) {
+        val context = LocalContext.current
+        RegisterScreen(
+            viewModel = customViewModelFactory(navController = navController) {
+                RegisterViewModel(
+                    (context.applicationContext as MyApplication).createUserUseCase,
+                )
+            }
+        )
+    }
+    composable(LoginDestination) {
         val context = LocalContext.current
         LoginScreen(
             viewModel = customViewModelFactory(navController = navController) {
                 LoginViewModel(
-                    (context.applicationContext as MyApplication).createUserUseCase,
+                    (context.applicationContext as MyApplication).loginUserUseCase,
                 )
             }
         )

@@ -16,7 +16,7 @@ import com.piriurna.tournamentmanager.android.AppUiState
 import com.piriurna.tournamentmanager.android.team.navigation.teamNavigation
 import com.piriurna.tournamentmanager.android.dashboard.navigation.DashboardDestination
 import com.piriurna.tournamentmanager.android.dashboard.navigation.dashboardNavigation
-import com.piriurna.tournamentmanager.android.login.navigation.LoginRegisterDestination
+import com.piriurna.tournamentmanager.android.login.navigation.LoginDestinations.LoginDestination
 import com.piriurna.tournamentmanager.android.login.navigation.loginNavigation
 import com.piriurna.tournamentmanager.android.navigation.BottomNavigationItemUi
 import com.piriurna.tournamentmanager.android.profile.navigation.profileNavigation
@@ -39,7 +39,7 @@ fun AppNavGraph(
 
     LaunchedEffect(key1 = appUiState.loggedInUser) {
         if(appUiState.loggedInUser == null)
-            navController.navigate(LoginRegisterDestination)
+            navController.navigate(LoginDestination)
         else
             navController.navigate(DashboardDestination)
     }

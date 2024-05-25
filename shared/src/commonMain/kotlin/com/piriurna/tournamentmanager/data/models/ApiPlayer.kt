@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ApiPlayer(
     val id: String,
-    val name: String
+    val nickname: String
 ) {
 }

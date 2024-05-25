@@ -1,15 +1,12 @@
 package com.piriurna.tournamentmanager.data.api
 
-import com.piriurna.tournamentmanager.BuildKonfig
 import com.piriurna.tournamentmanager.data.client
 import com.piriurna.tournamentmanager.data.ApiResult
 import com.piriurna.tournamentmanager.data.api.models.CreateTeamRequestBody
 import com.piriurna.tournamentmanager.data.api.models.CreateUserRequestBody
 import com.piriurna.tournamentmanager.data.api.models.tournament.TournamentListResponse
 import com.piriurna.tournamentmanager.data.bodyOrError
-import com.piriurna.tournamentmanager.data.models.ApiPlayer
 import com.piriurna.tournamentmanager.data.models.ApiTeam
-import com.piriurna.tournamentmanager.data.models.ApiTournament
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
@@ -28,7 +25,7 @@ class FifaCupsApiImpl(
         return try {
             client
                 .post {
-                    url("user/register")
+                    url("user")
                     bearerAuth(authToken)
                     setBody(createUserRequestBody)
                 }

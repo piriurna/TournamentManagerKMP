@@ -9,4 +9,8 @@
     <string name="my_team">My Team</string>
     <string name="next_tournament">Next Tournament</string>
     <string name="tournaments">Tournaments</string>
+    <string name="email">email</string>
+    <string name="nickname">nickname</string>
+    <string name="password">password</string>
+    <string name="register">Register</string>
 </resources>

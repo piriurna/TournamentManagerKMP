@@ -93,7 +93,7 @@ buildkonfig {
     packageName = "com.piriurna.tournamentmanager"
 
     defaultConfigs {
-        buildConfigField(STRING, "API_URL", "https://fifa-cups-backend.onrender.com/api/v1/")
+        buildConfigField(STRING, "API_URL", "https://i3bkjwn4w7.execute-api.us-east-1.amazonaws.com/api/v1/")
         buildConfigField(BOOLEAN, "MOCK_API", "true")
     }
 }

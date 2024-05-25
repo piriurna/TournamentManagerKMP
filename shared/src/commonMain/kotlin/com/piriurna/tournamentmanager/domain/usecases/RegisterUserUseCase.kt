@@ -7,7 +7,7 @@ import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-class AuthenticateUserUseCase(
+class RegisterUserUseCase(
     private val tournamentRepository: TournamentRepository,
     private val firebaseService: FirebaseService
 ) {
@@ -20,7 +20,7 @@ class AuthenticateUserUseCase(
                 return@flow
             }
 
-            val firebaseRegisterResult = firebaseService.authenticateUser(email, password)
+            val firebaseRegisterResult = firebaseService.registerUser(email, password)
 
             if(firebaseRegisterResult is ApiResult.Success) {
                 firebaseRegisterResult.result!!
@@ -30,7 +30,10 @@ class AuthenticateUserUseCase(
                 when {
                     registerUserResult.isSuccess -> emit(AppResult.Success(firebaseRegisterResult.result.user!!))
 
-                    registerUserResult.isFailure -> emit(AppResult.Error(registerUserResult.exceptionOrNull()?.message))
+                    registerUserResult.isFailure -> {
+                        emit(AppResult.Error(registerUserResult.exceptionOrNull()?.message))
+                        firebaseService.deleteUserRegistration()
+                    }
                 }
             } else if(firebaseRegisterResult is ApiResult.Error){
                 emit(AppResult.Error(firebaseRegisterResult.message))

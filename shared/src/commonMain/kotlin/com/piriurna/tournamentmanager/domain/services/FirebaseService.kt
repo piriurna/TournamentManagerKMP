@@ -5,7 +5,11 @@ import dev.gitlive.firebase.auth.AuthResult
 import dev.gitlive.firebase.auth.FirebaseUser
 
 interface FirebaseService {
+    suspend fun registerUser(email: String, password: String): ApiResult<AuthResult>
+
     suspend fun authenticateUser(email: String, password: String): ApiResult<AuthResult>
+
+    suspend fun deleteUserRegistration(): ApiResult<Unit>
 
     suspend fun getAuthToken(): String?
 
