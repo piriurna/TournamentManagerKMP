@@ -4,6 +4,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.piriurna.tournamentmanager.android.MyApplication
 import com.piriurna.tournamentmanager.android.common.customViewModelFactory
 import com.piriurna.tournamentmanager.android.dashboard.components.DashboardScreen
 import com.piriurna.tournamentmanager.android.dashboard.components.DashboardViewModel
@@ -15,7 +16,10 @@ fun NavGraphBuilder.dashboardNavigation(navController: NavController) {
     composable(DashboardDestination) {
         val context = LocalContext.current
         DashboardScreen(viewModel = customViewModelFactory(navController = navController) {
-            DashboardViewModel()
+            DashboardViewModel(
+                (context.applicationContext as MyApplication).getNextTournamentForUserUseCase,
+                (context.applicationContext as MyApplication).getUserTeamUseCase
+            )
         })
     }
 }

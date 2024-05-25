@@ -9,6 +9,8 @@ import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import com.piriurna.tournamentmanager.domain.usecases.AuthenticateUserUseCase
 import com.piriurna.tournamentmanager.domain.usecases.CreateTeamUseCase
+import com.piriurna.tournamentmanager.domain.usecases.GetNextTournamentForUserUseCase
+import com.piriurna.tournamentmanager.domain.usecases.GetUserTeamUseCase
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.initialize
 
@@ -31,6 +33,12 @@ class MyApplication: Application() {
     }
     val createTeamUseCase: CreateTeamUseCase by lazy {
         CreateTeamUseCase(tournamentRepository)
+    }
+    val getNextTournamentForUserUseCase: GetNextTournamentForUserUseCase by lazy {
+        GetNextTournamentForUserUseCase(tournamentRepository)
+    }
+    val getUserTeamUseCase: GetUserTeamUseCase by lazy {
+        GetUserTeamUseCase(tournamentRepository)
     }
 
     override fun onCreate() {

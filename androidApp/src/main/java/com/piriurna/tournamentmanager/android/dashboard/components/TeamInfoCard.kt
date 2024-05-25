@@ -3,30 +3,26 @@ package com.piriurna.tournamentmanager.android.dashboard.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.common.components.IconText
-import com.piriurna.tournamentmanager.android.dashboard.models.TournamentInfoUiData
-import com.piriurna.tournamentmanager.domain.models.Match
+import com.piriurna.tournamentmanager.android.dashboard.models.TeamUiData
 
 @Composable
-fun TournamentInfoCard(
+fun TeamInfoCard(
     modifier: Modifier = Modifier,
-    tournament: TournamentInfoUiData,
-    onAction: () -> Unit,
+    team: TeamUiData,
     verticalSpacing: Dp = 0.dp
 ) {
     ElevatedCard(
@@ -39,31 +35,23 @@ fun TournamentInfoCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(verticalSpacing)
         ) {
-            Text(text = tournament.name)
-            
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onClick = onAction,
-                shape = RoundedCornerShape(8.dp),
+            Text(text = team.name)
 
-            ) {
-                Text(text = tournament.buttonText)
-            }
+            Spacer(modifier = Modifier.height(32.dp))
 
-            TournamentInfoRow(
-                registeredPlayers = tournament.registeredTeams.size,
-                tournamentStatus = tournament.statusText
+            TeamInfoRow(
+                registeredPlayers = team.players.size,
+                isOwner = team.isOwner
             )
         }
     }
 }
 
 @Composable
-private fun TournamentInfoRow(
+private fun TeamInfoRow(
     modifier: Modifier = Modifier,
     registeredPlayers: Int,
-    tournamentStatus: String
+    isOwner: Boolean
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -74,24 +62,7 @@ private fun TournamentInfoRow(
             icon = Icons.Default.Face
         )
 
-        IconText(
-            text = tournamentStatus,
-            icon = Icons.Default.DateRange
-        )
+        if(isOwner)
+            Text(text = "Owner")
     }
-}
-
-@Preview
-@Composable
-private fun TournamentInfoCardPreview() {
-    TournamentInfoCard(
-        tournament = TournamentInfoUiData(
-            name = "Tournament",
-            tournamentDate = "04-05-2000",
-            status = Match.MatchStatus.LIVE,
-            registeredTeams = emptyList()
-        ),
-        onAction = {},
-        verticalSpacing = 24.dp
-    )
 }
