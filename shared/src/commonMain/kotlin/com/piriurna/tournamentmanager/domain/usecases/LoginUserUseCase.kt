@@ -24,6 +24,12 @@ class LoginUserUseCase(
             // Try to authenticate user with firebase
             val firebaseRegisterResult = firebaseService.authenticateUser(email, password)
 
+            if(firebaseRegisterResult is ApiResult.Error) {
+                emit(AppResult.Error(firebaseRegisterResult.message))
+                return@flow
+            }
+
+
             // Check if the user is already created in the backend
             val hasUserCreatedResponse = tournamentRepository.checkUser()
 
