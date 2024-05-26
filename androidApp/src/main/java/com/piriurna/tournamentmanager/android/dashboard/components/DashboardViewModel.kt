@@ -6,6 +6,7 @@ import com.piriurna.tournamentmanager.android.common.UiState
 import com.piriurna.tournamentmanager.android.team.navigation.TeamNavigation.CreateTeamHomePageDestination
 import com.piriurna.tournamentmanager.domain.models.Team
 import com.piriurna.tournamentmanager.domain.models.Tournament
+import com.piriurna.tournamentmanager.domain.models.User
 import com.piriurna.tournamentmanager.domain.usecases.AppResult
 import com.piriurna.tournamentmanager.domain.usecases.GetNextTournamentForUserUseCase
 import com.piriurna.tournamentmanager.domain.usecases.GetUserTeamUseCase
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 data class DashboardUiState(
     val isLoading: Boolean = false,
     val nextTournament: Tournament? = null,
-    val myTeam: Team? = null
+    val myTeam: Team? = null,
+    val loggedInUser: User? = null
 ): UiState
 
 

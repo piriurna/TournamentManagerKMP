@@ -29,7 +29,7 @@ fun DashboardScreen(
             Text(text = stringResource(R.string.my_team))
             Spacer(modifier = Modifier.height(8.dp))
             TeamInfoCard(
-                team = uiState.myTeam.toUiData(),
+                team = uiState.myTeam.toUiData(uiState.loggedInUser?.id),
                 verticalSpacing = 12.dp
             )
             Spacer(modifier = Modifier.height(16.dp))
