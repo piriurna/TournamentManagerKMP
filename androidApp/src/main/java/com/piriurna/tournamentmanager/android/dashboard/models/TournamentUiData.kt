@@ -1,9 +1,9 @@
 package com.piriurna.tournamentmanager.android.dashboard.models
 
-import com.piriurna.tournamentmanager.domain.models.Match
-import com.piriurna.tournamentmanager.domain.models.Team
-import com.piriurna.tournamentmanager.domain.models.Tournament
-import com.piriurna.tournamentmanager.domain.models.User
+import com.piriurna.tournamentmanager.fifacups.domain.models.Match
+import com.piriurna.tournamentmanager.fifacups.domain.models.Team
+import com.piriurna.tournamentmanager.fifacups.domain.models.Tournament
+import com.piriurna.tournamentmanager.fifacups.domain.models.User
 
 class TournamentInfoUiData(
     val name: String,
@@ -29,7 +29,7 @@ class TournamentInfoUiData(
 fun Tournament.toUiData(): TournamentInfoUiData {
     return TournamentInfoUiData(
         name = name,
-        status = matches.firstOrNull()?.status?:Match.MatchStatus.PRESENT, // TODO: FIX
+        status = matches.firstOrNull()?.status?: com.piriurna.tournamentmanager.fifacups.domain.models.Match.MatchStatus.PRESENT, // TODO: FIX
         tournamentDate = "04-05-2000", // TODO: FIX
         registeredTeams = teams
     )

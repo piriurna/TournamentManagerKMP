@@ -1,29 +1,29 @@
 package com.piriurna.tournamentmanager.android
 
 import android.app.Application
-import com.piriurna.tournamentmanager.data.api.FifaCupsApi
-import com.piriurna.tournamentmanager.data.api.FifaCupsApiImpl
-import com.piriurna.tournamentmanager.data.repositories.TournamentRepositoryImpl
-import com.piriurna.tournamentmanager.data.services.FirebaseServiceImpl
-import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
-import com.piriurna.tournamentmanager.domain.services.FirebaseService
-import com.piriurna.tournamentmanager.domain.usecases.RegisterUserUseCase
-import com.piriurna.tournamentmanager.domain.usecases.CreateTeamUseCase
-import com.piriurna.tournamentmanager.domain.usecases.GetNextTournamentForUserUseCase
-import com.piriurna.tournamentmanager.domain.usecases.GetTournamentsByDateUseCase
-import com.piriurna.tournamentmanager.domain.usecases.GetUserTeamUseCase
-import com.piriurna.tournamentmanager.domain.usecases.LoginUserUseCase
+import com.piriurna.tournamentmanager.fifacups.data.api.FifaCupsApi
+import com.piriurna.tournamentmanager.fifacups.data.api.FifaCupsApiImpl
+import com.piriurna.tournamentmanager.fifacups.data.repositories.TournamentRepositoryImpl
+import com.piriurna.tournamentmanager.firebase.data.api.FirebaseApiImpl
+import com.piriurna.tournamentmanager.fifacups.domain.repositories.TournamentRepository
+import com.piriurna.tournamentmanager.firebase.domain.api.FirebaseApi
+import com.piriurna.tournamentmanager.login.domain.usecases.RegisterUserUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.CreateTeamUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetNextTournamentForUserUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetTournamentsByDateUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetUserTeamUseCase
+import com.piriurna.tournamentmanager.login.domain.usecases.LoginUserUseCase
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.initialize
 
 class MyApplication: Application() {
 
-    val firebaseService: FirebaseService by lazy {
-        FirebaseServiceImpl()
+    val firebaseApi: FirebaseApi by lazy {
+        FirebaseApiImpl()
     }
 
     val fifaCupsApi: FifaCupsApi by lazy {
-        FifaCupsApiImpl(firebaseService)
+        FifaCupsApiImpl(firebaseApi)
     }
 
     val tournamentRepository: TournamentRepository by lazy {
@@ -31,11 +31,11 @@ class MyApplication: Application() {
     }
 
     val createUserUseCase: RegisterUserUseCase by lazy {
-        RegisterUserUseCase(tournamentRepository, firebaseService)
+        RegisterUserUseCase(tournamentRepository, firebaseApi)
     }
 
     val loginUserUseCase: LoginUserUseCase by lazy {
-        LoginUserUseCase(tournamentRepository, firebaseService)
+        LoginUserUseCase(tournamentRepository, firebaseApi)
     }
     val createTeamUseCase: CreateTeamUseCase by lazy {
         CreateTeamUseCase(tournamentRepository)

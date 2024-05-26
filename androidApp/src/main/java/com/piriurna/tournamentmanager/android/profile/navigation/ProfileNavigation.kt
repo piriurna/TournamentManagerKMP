@@ -18,7 +18,7 @@ fun NavGraphBuilder.profileNavigation(navController: NavController) {
         ProfileScreen(
             viewModel = customViewModelFactory(navController = navController) {
                 ProfileViewModel(
-                    (context.applicationContext as MyApplication).firebaseService
+                    (context.applicationContext as MyApplication).firebaseApi
                 )
             }
         )

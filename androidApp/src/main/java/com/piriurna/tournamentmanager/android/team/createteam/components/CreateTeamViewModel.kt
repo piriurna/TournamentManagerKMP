@@ -4,9 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.piriurna.tournamentmanager.android.common.BaseViewModel
 import com.piriurna.tournamentmanager.android.common.UiState
 import com.piriurna.tournamentmanager.android.dashboard.navigation.DashboardDestination
-import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
-import com.piriurna.tournamentmanager.domain.usecases.AppResult
-import com.piriurna.tournamentmanager.domain.usecases.CreateTeamUseCase
+import com.piriurna.tournamentmanager.login.domain.usecases.AppResult
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.CreateTeamUseCase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

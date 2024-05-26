@@ -3,9 +3,9 @@ package com.piriurna.tournamentmanager.android.tournament.components
 import androidx.lifecycle.viewModelScope
 import com.piriurna.tournamentmanager.android.common.BaseViewModel
 import com.piriurna.tournamentmanager.android.common.UiState
-import com.piriurna.tournamentmanager.domain.models.Tournament
-import com.piriurna.tournamentmanager.domain.usecases.AppResult
-import com.piriurna.tournamentmanager.domain.usecases.GetTournamentsByDateUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.models.Tournament
+import com.piriurna.tournamentmanager.login.domain.usecases.AppResult
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetTournamentsByDateUseCase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 

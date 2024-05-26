@@ -1,7 +1,7 @@
 package com.piriurna.tournamentmanager.android.dashboard.models
 
-import com.piriurna.tournamentmanager.domain.models.Team
-import com.piriurna.tournamentmanager.domain.models.User
+import com.piriurna.tournamentmanager.fifacups.domain.models.Team
+import com.piriurna.tournamentmanager.fifacups.domain.models.User
 
 data class TeamUiData(
     val name: String,

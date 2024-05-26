@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.common.components.IconText
 import com.piriurna.tournamentmanager.android.dashboard.models.TournamentInfoUiData
-import com.piriurna.tournamentmanager.domain.models.Match
+import com.piriurna.tournamentmanager.fifacups.domain.models.Match
 
 @Composable
 fun TournamentInfoCard(

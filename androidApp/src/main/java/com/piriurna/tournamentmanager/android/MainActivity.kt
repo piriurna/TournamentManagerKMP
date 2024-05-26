@@ -12,8 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.piriurna.tournamentmanager.android.common.customViewModelFactory
 import com.piriurna.tournamentmanager.android.navigation.components.AppNavGraph
-import com.piriurna.tournamentmanager.domain.GlobalNavigationHandler
-import com.piriurna.tournamentmanager.domain.GlobalNavigator
+import com.piriurna.tournamentmanager.common.domain.GlobalNavigationHandler
+import com.piriurna.tournamentmanager.common.domain.GlobalNavigator
 import dev.gitlive.firebase.auth.FirebaseUser
 
 class MainActivity : ComponentActivity(), GlobalNavigationHandler {
@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity(), GlobalNavigationHandler {
             navController = rememberNavController()
             val context = LocalContext.current
             viewModel = customViewModelFactory(navController = navController) {
-                val firebaseService = (context.applicationContext as MyApplication).firebaseService
+                val firebaseService = (context.applicationContext as MyApplication).firebaseApi
                 MainViewModel(firebaseService)
             }
             GlobalNavigator.registerHandler(this)
