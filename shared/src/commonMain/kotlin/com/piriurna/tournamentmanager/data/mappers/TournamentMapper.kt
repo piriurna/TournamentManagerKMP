@@ -1,32 +1,27 @@
 package com.piriurna.tournamentmanager.data.mappers
 
-import com.piriurna.tournamentmanager.data.models.ApiPlayer
 import com.piriurna.tournamentmanager.data.models.ApiTeam
 import com.piriurna.tournamentmanager.data.models.ApiTournament
 import com.piriurna.tournamentmanager.data.models.ApiUser
-import com.piriurna.tournamentmanager.domain.models.Player
 import com.piriurna.tournamentmanager.domain.models.Team
 import com.piriurna.tournamentmanager.domain.models.Tournament
 import com.piriurna.tournamentmanager.domain.models.User
 
-fun ApiUser.toUser(): User {
-    return User(
-        id, nickname, email
-    )
-}
-
 fun ApiTeam.toTeam(): Team {
     return Team(
-        id,
-        name,
-        players.map{ it.toPlayer() },
-        owner.toPlayer(),
+        id = id,
+        name = name,
+        players = players.map{ it.toUser() },
+        owner = owner.toUser(),
+        imageUrl = imageUrl?:""
     )
 }
 
-fun ApiPlayer.toPlayer(): Player {
-    return Player(
-        id, nickname
+fun ApiUser.toUser(): User {
+    return User(
+        id = id,
+        nickname = nickname,
+        email = email
     )
 }
 
@@ -34,7 +29,7 @@ fun ApiTournament.toTournament(): Tournament {
     return Tournament(
         id = id,
         name = name,
-        owner = owner.toPlayer(),
+        owner = owner.toUser(),
         matches = emptyList(),
         date = startDate,
         teams = assignedTeams.map { it.toTeam() },

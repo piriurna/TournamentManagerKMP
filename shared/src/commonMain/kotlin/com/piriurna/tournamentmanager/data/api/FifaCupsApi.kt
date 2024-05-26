@@ -8,11 +8,11 @@ import com.piriurna.tournamentmanager.data.models.ApiTeam
 import com.piriurna.tournamentmanager.data.models.ApiUser
 
 interface FifaCupsApi {
-    suspend fun registerUser(createUserRequestBody: CreateUserRequestBody): ApiResult<String> //TODO: TEMPORARY STRING RETURNING FROM API
+    suspend fun registerUser(createUserRequestBody: CreateUserRequestBody): ApiResult<ApiUser>
 
     suspend fun checkUser(): ApiResult<ApiUser>
 
-    suspend fun registerTeam(createTeamRequestBody: CreateTeamRequestBody): ApiResult<String> //TODO: TEMPORARY STRING RETURNING FROM API
+    suspend fun registerTeam(createTeamRequestBody: CreateTeamRequestBody): ApiResult<ApiTeam>
 
     suspend fun getUserTeams(): ApiResult<List<ApiTeam>>
 

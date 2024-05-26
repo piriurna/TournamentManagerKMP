@@ -19,7 +19,7 @@ class FifaCupsApiImpl(
     private val firebaseService: FirebaseService
 ): FifaCupsApi {
 
-    override suspend fun registerUser(createUserRequestBody: CreateUserRequestBody): ApiResult<String> { //TODO: TEMPORARY STRING RETURNING FROM API
+    override suspend fun registerUser(createUserRequestBody: CreateUserRequestBody): ApiResult<ApiUser> { //TODO: TEMPORARY STRING RETURNING FROM API
         val authToken = firebaseService.getAuthToken()
             ?: return ApiResult.Error("No Auth Token", status = 401)
 
@@ -30,7 +30,7 @@ class FifaCupsApiImpl(
                     bearerAuth(authToken)
                     setBody(createUserRequestBody)
                 }
-                .bodyOrError<String>()
+                .bodyOrError<ApiUser>()
         } catch (e: Exception) {
             ApiResult.Error("error registering user: ${e.message}", status = 500)
         }
@@ -52,7 +52,7 @@ class FifaCupsApiImpl(
         }
     }
 
-    override suspend fun registerTeam(createTeamRequestBody: CreateTeamRequestBody): ApiResult<String> {
+    override suspend fun registerTeam(createTeamRequestBody: CreateTeamRequestBody): ApiResult<ApiTeam> {
         val authToken = firebaseService.getAuthToken()
             ?: return ApiResult.Error("No Auth Token", status = 401)
 
@@ -62,7 +62,7 @@ class FifaCupsApiImpl(
                 bearerAuth(authToken)
                 setBody(createTeamRequestBody)
             }
-            .bodyOrError<String>()
+            .bodyOrError<ApiTeam>()
         } catch (e: Exception) {
             ApiResult.Error("error registering team: ${e.message}", status = 500)
         }

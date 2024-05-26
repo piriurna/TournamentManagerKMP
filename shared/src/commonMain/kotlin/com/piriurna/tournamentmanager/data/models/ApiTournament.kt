@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class ApiTournament(
     val id: String,
     val name: String,
-    val owner: ApiPlayer,
+    val owner: ApiUser,
     val status: TournamentStatus,
     val startDate: LocalDateTime,
     val assignedTeams: List<ApiTeam>,
