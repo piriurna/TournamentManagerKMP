@@ -4,7 +4,7 @@ data class Match(
     val id: String,
     val homeTeam: MatchTeam,
     val awayTeam: MatchTeam,
-    val winner: Team,
+    val winner: Team?,
     val status: MatchStatus
 ) {
 

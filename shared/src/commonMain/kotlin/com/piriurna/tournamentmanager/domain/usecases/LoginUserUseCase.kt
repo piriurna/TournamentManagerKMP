@@ -1,6 +1,7 @@
 package com.piriurna.tournamentmanager.domain.usecases
 
 import com.piriurna.tournamentmanager.data.ApiResult
+import com.piriurna.tournamentmanager.data.models.ApiTournamentGroup
 import com.piriurna.tournamentmanager.domain.repositories.TournamentRepository
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import dev.gitlive.firebase.auth.FirebaseUser

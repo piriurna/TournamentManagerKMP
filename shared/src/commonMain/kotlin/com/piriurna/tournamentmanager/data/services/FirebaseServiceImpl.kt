@@ -19,9 +19,9 @@ class FirebaseServiceImpl: FirebaseService {
             val authResult = Firebase.auth.createUserWithEmailAndPassword(email, password)
             ApiResult.Success(authResult)
         } catch (e: FirebaseAuthUserCollisionException) {
-            ApiResult.Error(e.message?:"Email already taken", 400)
+            FirebaseServiceError.UserAlreadyCreated()
         } catch (e: FirebaseAuthWeakPasswordException) {
-            ApiResult.Error(e.message?:"Password is too weak", 400)
+            FirebaseServiceError.PasswordTooWeak()
         }
     }
 
@@ -30,9 +30,9 @@ class FirebaseServiceImpl: FirebaseService {
             val existingAuthResult = Firebase.auth.signInWithEmailAndPassword(email, password)
             ApiResult.Success(existingAuthResult)
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            ApiResult.Error(e.message?:"Wrong Email/Password", 400)
+            FirebaseServiceError.WrongCredentials()
         } catch (e: FirebaseAuthException) {
-            ApiResult.Error(e.message?:"Error authenticating User", 400)
+            FirebaseServiceError.GenericError()
         }
     }
 
@@ -40,7 +40,7 @@ class FirebaseServiceImpl: FirebaseService {
         return if(Firebase.auth.currentUser?.delete() != null) {
             ApiResult.Success(Unit)
         } else {
-            ApiResult.Error("Error deleting user", status = 500)
+            FirebaseServiceError.GenericError()
         }
     }
     override suspend fun getAuthToken(): String? {
