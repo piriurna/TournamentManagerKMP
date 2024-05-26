@@ -23,12 +23,11 @@ class RegisterUserUseCase(
             val firebaseRegisterResult = firebaseService.registerUser(email, password)
 
             if(firebaseRegisterResult is ApiResult.Success) {
-                firebaseRegisterResult.result!!
                 val registerUserResult =
                     tournamentRepository.registerUser(email = email, nickname = nickname)
 
                 when {
-                    registerUserResult.isSuccess -> emit(AppResult.Success(firebaseRegisterResult.result.user!!))
+                    registerUserResult.isSuccess -> emit(AppResult.Success(firebaseRegisterResult.result!!.user!!))
 
                     registerUserResult.isFailure -> {
                         emit(AppResult.Error(registerUserResult.exceptionOrNull()?.message))

@@ -35,7 +35,7 @@ class MyApplication: Application() {
     }
 
     val loginUserUseCase: LoginUserUseCase by lazy {
-        LoginUserUseCase(firebaseService)
+        LoginUserUseCase(tournamentRepository, firebaseService)
     }
     val createTeamUseCase: CreateTeamUseCase by lazy {
         CreateTeamUseCase(tournamentRepository)

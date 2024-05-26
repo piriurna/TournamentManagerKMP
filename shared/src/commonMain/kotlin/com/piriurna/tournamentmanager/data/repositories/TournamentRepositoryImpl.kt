@@ -6,6 +6,7 @@ import com.piriurna.tournamentmanager.data.api.models.CreateTeamRequestBody
 import com.piriurna.tournamentmanager.data.api.models.CreateUserRequestBody
 import com.piriurna.tournamentmanager.data.mappers.toTeam
 import com.piriurna.tournamentmanager.data.mappers.toTournament
+import com.piriurna.tournamentmanager.data.mappers.toUser
 import com.piriurna.tournamentmanager.domain.models.Player
 import com.piriurna.tournamentmanager.domain.models.Team
 import com.piriurna.tournamentmanager.domain.models.Tournament
@@ -18,6 +19,14 @@ class TournamentRepositoryImpl(
     override suspend fun registerUser(email: String, nickname: String): Result<User> {
         return when(val user = fifaCupsApi.registerUser(CreateUserRequestBody(nickname, email))) {
             is ApiResult.Success -> Result.success(User(id = "", nickname, email))
+
+            is ApiResult.Error -> Result.failure(Throwable(user.message))
+        }
+    }
+
+    override suspend fun checkUser(): Result<User> {
+        return when(val user = fifaCupsApi.checkUser()) {
+            is ApiResult.Success -> Result.success(user.result!!.toUser())
 
             is ApiResult.Error -> Result.failure(Throwable(user.message))
         }

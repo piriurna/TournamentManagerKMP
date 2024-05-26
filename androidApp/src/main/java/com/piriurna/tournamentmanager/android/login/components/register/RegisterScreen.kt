@@ -3,7 +3,6 @@ package com.piriurna.tournamentmanager.android.login.components.register
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -15,7 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.R
 
@@ -39,7 +43,7 @@ fun RegisterScreen(
         )
 
         TextField(
-            value = uiState.email,
+            value = uiState.nickname,
             onValueChange = viewModel::onNicknameChange,
             label = { Text(text = stringResource(R.string.nickname)) }
         )
@@ -55,16 +59,24 @@ fun RegisterScreen(
             Text(text = stringResource(R.string.register))
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Row {
-            Text(
-                text = "Already have an account?"
-            )
-            Text(
-                modifier = Modifier.clickable(onClick = viewModel::goToLogin),
-                text = "Login",
-                color = MaterialTheme.colorScheme.primary
-            )
-        }
+        Text(
+            modifier = Modifier.clickable(onClick = viewModel::goToLogin),
+            text = buildAnnotatedString {
+                append(stringResource(R.string.already_have_an_account))
+
+                append(" ")
+
+                withStyle(
+                    SpanStyle(
+                        color = MaterialTheme.colorScheme.primary,
+                        fontWeight = FontWeight.Bold,
+                        textDecoration = TextDecoration.Underline
+                    )
+                ) {
+                    append(stringResource(id = R.string.login))
+                }
+            }
+        )
 
         if(uiState.error != null)
             Text(text = uiState.error)

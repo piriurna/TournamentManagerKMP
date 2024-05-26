@@ -1,7 +1,5 @@
 package com.piriurna.tournamentmanager.domain.repositories
 
-import com.piriurna.tournamentmanager.data.ApiResult
-import com.piriurna.tournamentmanager.domain.models.Match
 import com.piriurna.tournamentmanager.domain.models.Team
 import com.piriurna.tournamentmanager.domain.models.Tournament
 import com.piriurna.tournamentmanager.domain.models.User
@@ -15,6 +13,8 @@ interface TournamentRepository {
     // USER
     //=======================
     suspend fun registerUser(email: String, nickname: String): Result<User>
+
+    suspend fun checkUser(): Result<User>
 
     //=======================
     // TEAM

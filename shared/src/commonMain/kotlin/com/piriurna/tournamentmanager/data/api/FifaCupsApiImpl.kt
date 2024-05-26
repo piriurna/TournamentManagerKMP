@@ -7,6 +7,7 @@ import com.piriurna.tournamentmanager.data.api.models.CreateUserRequestBody
 import com.piriurna.tournamentmanager.data.api.models.tournament.TournamentListResponse
 import com.piriurna.tournamentmanager.data.bodyOrError
 import com.piriurna.tournamentmanager.data.models.ApiTeam
+import com.piriurna.tournamentmanager.data.models.ApiUser
 import com.piriurna.tournamentmanager.domain.services.FirebaseService
 import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.get
@@ -30,6 +31,22 @@ class FifaCupsApiImpl(
                     setBody(createUserRequestBody)
                 }
                 .bodyOrError<String>()
+        } catch (e: Exception) {
+            ApiResult.Error("error registering user: ${e.message}", status = 500)
+        }
+    }
+
+    override suspend fun checkUser(): ApiResult<ApiUser> {
+        val authToken = firebaseService.getAuthToken()
+            ?: return ApiResult.Error("No Auth Token", status = 401)
+
+        return try {
+            client
+                .get {
+                    url("user")
+                    bearerAuth(authToken)
+                }
+                .bodyOrError<ApiUser>()
         } catch (e: Exception) {
             ApiResult.Error("error registering user: ${e.message}", status = 500)
         }

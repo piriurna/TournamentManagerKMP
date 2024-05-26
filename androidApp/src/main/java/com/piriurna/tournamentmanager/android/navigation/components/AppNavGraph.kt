@@ -1,5 +1,6 @@
 package com.piriurna.tournamentmanager.android.navigation.components
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -45,6 +46,7 @@ fun AppNavGraph(
     }
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         bottomBar = {
             if(currentDestination in destinationsWithBottomSheet.map { it.destination }) {
                 appUiState.loggedInUser?.let {
@@ -58,7 +60,9 @@ fun AppNavGraph(
         },
     ) { paddingValues ->
         NavHost(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
             navController = navController,
             startDestination = DashboardDestination
         ) {

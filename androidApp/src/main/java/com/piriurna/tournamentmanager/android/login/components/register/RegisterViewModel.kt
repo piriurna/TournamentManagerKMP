@@ -26,7 +26,7 @@ class RegisterViewModel(
     override fun initialState() = RegisterUiState()
     fun onAuthenticate() {
         viewModelScope.launch {
-            registerUserUseCase(uiState.value.email, uiState.value.email, uiState.value.password).collectLatest {
+            registerUserUseCase(uiState.value.email, uiState.value.nickname, uiState.value.password).collectLatest {
                 when(it) {
                     is AppResult.Success -> GlobalNavigator.login(it.data)
 
