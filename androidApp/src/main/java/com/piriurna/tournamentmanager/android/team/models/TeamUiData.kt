@@ -1,4 +1,4 @@
-package com.piriurna.tournamentmanager.android.dashboard.models
+package com.piriurna.tournamentmanager.android.team.models
 
 import com.piriurna.tournamentmanager.fifacups.domain.models.Team
 import com.piriurna.tournamentmanager.fifacups.domain.models.User

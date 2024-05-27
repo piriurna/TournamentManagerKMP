@@ -1,4 +1,4 @@
-package com.piriurna.tournamentmanager.android.dashboard.components
+package com.piriurna.tournamentmanager.android.team.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.common.components.IconText
-import com.piriurna.tournamentmanager.android.dashboard.models.TeamUiData
+import com.piriurna.tournamentmanager.android.team.models.TeamUiData
 
 @Composable
 fun TeamInfoCard(
