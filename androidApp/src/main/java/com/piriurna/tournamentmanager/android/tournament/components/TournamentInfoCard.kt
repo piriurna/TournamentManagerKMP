@@ -1,4 +1,4 @@
-package com.piriurna.tournamentmanager.android.dashboard.components
+package com.piriurna.tournamentmanager.android.tournament.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.common.components.IconText
-import com.piriurna.tournamentmanager.android.dashboard.models.TournamentInfoUiData
+import com.piriurna.tournamentmanager.android.tournament.models.TournamentInfoUiData
 import com.piriurna.tournamentmanager.fifacups.domain.models.Match
 
 @Composable
