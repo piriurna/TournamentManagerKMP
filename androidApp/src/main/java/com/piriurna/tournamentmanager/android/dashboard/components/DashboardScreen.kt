@@ -6,13 +6,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.R
-import com.piriurna.tournamentmanager.android.dashboard.models.toUiData
+import com.piriurna.tournamentmanager.android.team.components.TeamInfoCard
+import com.piriurna.tournamentmanager.android.team.models.toUiData
+import com.piriurna.tournamentmanager.android.tournament.components.TournamentInfoCard
+import com.piriurna.tournamentmanager.android.tournament.models.toUiData
 
 @Composable
 fun DashboardScreen(
@@ -25,6 +31,16 @@ fun DashboardScreen(
             .fillMaxSize()
             .padding(horizontal = 16.dp),
     ) {
+        if(uiState.loggedInUser != null) {
+            Text(text = buildAnnotatedString {
+                withStyle(MaterialTheme.typography.headlineMedium.toSpanStyle()) {
+                    append("Welcome")
+                }
+                withStyle(MaterialTheme.typography.headlineLarge.toSpanStyle()) {
+                    append(uiState.loggedInUser.nickname)
+                }
+            })
+        }
         if(uiState.myTeam != null) {
             Text(text = stringResource(R.string.my_team))
             Spacer(modifier = Modifier.height(8.dp))

@@ -1,5 +1,6 @@
 package com.piriurna.tournamentmanager.fifacups.domain.usecases
 
+import com.piriurna.tournamentmanager.common.data.ext.appException
 import com.piriurna.tournamentmanager.login.domain.usecases.AppResult
 import com.piriurna.tournamentmanager.fifacups.domain.models.Tournament
 import com.piriurna.tournamentmanager.fifacups.domain.repositories.TournamentRepository
@@ -31,7 +32,7 @@ class GetTournamentsByDateUseCase(
                     emit(AppResult.Success(tournamentsByDate))
                 }
 
-                result.isFailure -> emit(AppResult.Error(result.exceptionOrNull()?.message))
+                result.isFailure -> emit(AppResult.Error(result.appException()))
             }
         }
     }

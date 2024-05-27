@@ -8,6 +8,7 @@ import com.piriurna.tournamentmanager.fifacups.data.models.ApiTeam
 import com.piriurna.tournamentmanager.fifacups.data.models.ApiUser
 
 interface FifaCupsApi {
+
     suspend fun registerUser(createUserRequestBody: CreateUserRequestBody): ApiResult<ApiUser>
 
     suspend fun checkUser(): ApiResult<ApiUser>

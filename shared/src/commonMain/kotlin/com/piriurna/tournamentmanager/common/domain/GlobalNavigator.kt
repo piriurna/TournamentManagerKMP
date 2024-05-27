@@ -1,11 +1,11 @@
 package com.piriurna.tournamentmanager.common.domain
 
-import dev.gitlive.firebase.auth.FirebaseUser
+import com.piriurna.tournamentmanager.fifacups.domain.models.User
 
 interface GlobalNavigationHandler {
-    fun logout(user: FirebaseUser?)
+    fun logout(user: User?)
 
-    fun login(user: FirebaseUser?)
+    fun login(user: User?)
 }
 
 object GlobalNavigator {
@@ -24,7 +24,7 @@ object GlobalNavigator {
         handler?.logout(null)
     }
 
-    fun login(user: FirebaseUser?) {
+    fun login(user: User?) {
         handler?.login(user)
     }
 }

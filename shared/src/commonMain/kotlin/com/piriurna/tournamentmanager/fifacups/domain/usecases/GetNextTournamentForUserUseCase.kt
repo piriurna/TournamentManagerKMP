@@ -1,5 +1,6 @@
 package com.piriurna.tournamentmanager.fifacups.domain.usecases
 
+import com.piriurna.tournamentmanager.common.data.ext.appException
 import com.piriurna.tournamentmanager.login.domain.usecases.AppResult
 import com.piriurna.tournamentmanager.fifacups.domain.models.Tournament
 import com.piriurna.tournamentmanager.fifacups.domain.repositories.TournamentRepository
@@ -19,7 +20,7 @@ class GetNextTournamentForUserUseCase(
             if(result.isSuccess) {
                 emit(AppResult.Success(result.getOrThrow().firstOrNull()))
             } else {
-                emit(AppResult.Error(result.exceptionOrNull()?.message))
+                emit(AppResult.Error(result.appException()))
             }
         }
     }

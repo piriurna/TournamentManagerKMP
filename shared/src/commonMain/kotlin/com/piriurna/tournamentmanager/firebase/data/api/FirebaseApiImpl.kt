@@ -43,18 +43,29 @@ class FirebaseApiImpl: FirebaseApi {
             FirebaseApiError.GenericError()
         }
     }
-    override suspend fun getAuthToken(): String? {
-        if(Firebase.auth.currentUser == null) return null
+    override suspend fun getAuthToken(): ApiResult<String> {
+        if(Firebase.auth.currentUser == null) return FirebaseApiError.UserNotLoggedIn()
 
-        return Firebase.auth.currentUser?.getIdToken(true)
+        val tokenResponse = Firebase.auth.currentUser!!.getIdToken(true)
+
+        return if(tokenResponse != null) {
+            ApiResult.Success(tokenResponse)
+        } else {
+            FirebaseApiError.GenericError()
+        }
     }
 
-    override suspend fun getLoggedInUser(): FirebaseUser? {
-        return Firebase.auth.currentUser
+    override suspend fun getLoggedInUser(): ApiResult<FirebaseUser> {
+        return if(Firebase.auth.currentUser != null) {
+            ApiResult.Success(Firebase.auth.currentUser!!)
+        } else {
+            FirebaseApiError.UserNotLoggedIn()
+        }
     }
 
-    override suspend fun logOutUser() {
+    override suspend fun logOutUser(): ApiResult<Unit> {
         Firebase.auth.signOut()
         GlobalNavigator.logout()
+        return ApiResult.Success(Unit)
     }
 }

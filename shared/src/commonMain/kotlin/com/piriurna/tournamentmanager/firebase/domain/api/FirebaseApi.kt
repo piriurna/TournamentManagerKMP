@@ -11,9 +11,9 @@ interface FirebaseApi {
 
     suspend fun deleteUserRegistration(): ApiResult<Unit>
 
-    suspend fun getAuthToken(): String?
+    suspend fun getAuthToken(): ApiResult<String>
 
-    suspend fun getLoggedInUser(): FirebaseUser?
+    suspend fun getLoggedInUser(): ApiResult<FirebaseUser>
 
-    suspend fun logOutUser()
+    suspend fun logOutUser(): ApiResult<Unit>
 }

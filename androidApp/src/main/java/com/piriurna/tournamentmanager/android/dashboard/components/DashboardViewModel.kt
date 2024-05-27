@@ -23,7 +23,7 @@ data class DashboardUiState(
 
 class DashboardViewModel(
     private val getNextTournamentForUserUseCase: GetNextTournamentForUserUseCase,
-    private val getUserTeamUseCase: GetUserTeamUseCase
+    private val getUserTeamUseCase: GetUserTeamUseCase,
 ): BaseViewModel<DashboardUiState>() {
     override fun initialState() = DashboardUiState()
 

@@ -14,7 +14,7 @@ import com.piriurna.tournamentmanager.android.common.customViewModelFactory
 import com.piriurna.tournamentmanager.android.navigation.components.AppNavGraph
 import com.piriurna.tournamentmanager.common.domain.GlobalNavigationHandler
 import com.piriurna.tournamentmanager.common.domain.GlobalNavigator
-import dev.gitlive.firebase.auth.FirebaseUser
+import com.piriurna.tournamentmanager.fifacups.domain.models.User
 
 class MainActivity : ComponentActivity(), GlobalNavigationHandler {
 
@@ -27,8 +27,7 @@ class MainActivity : ComponentActivity(), GlobalNavigationHandler {
             navController = rememberNavController()
             val context = LocalContext.current
             viewModel = customViewModelFactory(navController = navController) {
-                val firebaseService = (context.applicationContext as MyApplication).firebaseApi
-                MainViewModel(firebaseService)
+                MainViewModel((context.applicationContext as MyApplication).getLoggedInUserUseCase)
             }
             GlobalNavigator.registerHandler(this)
             MyApplicationTheme {
@@ -45,11 +44,11 @@ class MainActivity : ComponentActivity(), GlobalNavigationHandler {
         }
     }
 
-    override fun logout(user: FirebaseUser?) {
+    override fun logout(user: User?) {
         viewModel.onUserChange(user)
     }
 
-    override fun login(user: FirebaseUser?) {
+    override fun login(user: User?) {
         viewModel.onUserChange(user)
     }
 
