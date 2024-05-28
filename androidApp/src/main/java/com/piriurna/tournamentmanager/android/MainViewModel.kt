@@ -47,7 +47,8 @@ class MainViewModel(
                     is AppResult.Success -> {
                         updateUiState(
                             uiState.value.copy(
-                                loggedInUser = it.data
+                                loggedInUser = it.data,
+                                isLoading = false
                             )
                         )
                     }

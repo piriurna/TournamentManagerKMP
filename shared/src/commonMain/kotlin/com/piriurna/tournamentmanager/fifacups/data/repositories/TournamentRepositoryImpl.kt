@@ -19,7 +19,7 @@ class TournamentRepositoryImpl(
         return when(val user = fifaCupsApi.registerUser(CreateUserRequestBody(nickname, email))) {
             is ApiResult.Success -> Result.success(user.result!!.toUser())
 
-            is ApiResult.Error -> Result.failure(Throwable(user.message))
+            is ApiResult.Error -> Result.failure(user.exception)
         }
     }
 
@@ -27,7 +27,7 @@ class TournamentRepositoryImpl(
         return when(val user = fifaCupsApi.checkUser()) {
             is ApiResult.Success -> Result.success(user.result!!.toUser())
 
-            is ApiResult.Error -> Result.failure(Throwable(user.message))
+            is ApiResult.Error -> Result.failure(user.exception)
         }
     }
 
@@ -35,7 +35,7 @@ class TournamentRepositoryImpl(
         return when(val team = fifaCupsApi.registerTeam(CreateTeamRequestBody(name, imageUrl))) {
             is ApiResult.Success -> Result.success(team.result!!.toTeam())
 
-            is ApiResult.Error -> Result.failure(Throwable(team.message))
+            is ApiResult.Error -> Result.failure(team.exception)
         }
     }
 
@@ -43,7 +43,7 @@ class TournamentRepositoryImpl(
         return when(val response = fifaCupsApi.getUserTeams()) {
             is ApiResult.Success -> Result.success(response.result?.firstOrNull()?.toTeam())
 
-            is ApiResult.Error -> Result.failure(Throwable(response.message))
+            is ApiResult.Error -> Result.failure(response.exception)
         }
     }
 
@@ -51,7 +51,7 @@ class TournamentRepositoryImpl(
         return when(val response = fifaCupsApi.getTournamentsForUser()) {
             is ApiResult.Success -> Result.success(response.result?.tournaments?.map { it.toTournament() }?: emptyList())
 
-            is ApiResult.Error -> Result.failure(Throwable(response.message))
+            is ApiResult.Error -> Result.failure(response.exception)
         }
     }
 }

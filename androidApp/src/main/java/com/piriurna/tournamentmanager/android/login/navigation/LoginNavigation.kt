@@ -31,6 +31,8 @@ fun NavGraphBuilder.loginNavigation(navController: NavController) {
             viewModel = customViewModelFactory(navController = navController) {
                 LoginViewModel(
                     (context.applicationContext as MyApplication).loginUserUseCase,
+                    (context.applicationContext as MyApplication).getLoggedInUserUseCase,
+
                 )
             }
         )

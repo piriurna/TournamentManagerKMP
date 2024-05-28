@@ -14,13 +14,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.piriurna.tournamentmanager.android.AppUiState
-import com.piriurna.tournamentmanager.android.team.navigation.teamNavigation
+import com.piriurna.tournamentmanager.android.common.components.LoadingScreen
 import com.piriurna.tournamentmanager.android.dashboard.navigation.DashboardDestination
 import com.piriurna.tournamentmanager.android.dashboard.navigation.dashboardNavigation
 import com.piriurna.tournamentmanager.android.login.navigation.LoginDestinations.LoginDestination
 import com.piriurna.tournamentmanager.android.login.navigation.loginNavigation
 import com.piriurna.tournamentmanager.android.navigation.BottomNavigationItemUi
 import com.piriurna.tournamentmanager.android.profile.navigation.profileNavigation
+import com.piriurna.tournamentmanager.android.team.navigation.teamNavigation
 import com.piriurna.tournamentmanager.android.tournament.navigation.tournamentsNavGraph
 
 @Composable
@@ -59,22 +60,25 @@ fun AppNavGraph(
             }
         },
     ) { paddingValues ->
-        NavHost(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
-            navController = navController,
-            startDestination = DashboardDestination
-        ) {
-            loginNavigation(navController)
+            NavHost(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues),
+                navController = navController,
+                startDestination = DashboardDestination
+            ) {
+                loginNavigation(navController)
 
-            dashboardNavigation(navController)
+                dashboardNavigation(navController)
 
-            teamNavigation(navController)
+                teamNavigation(navController)
 
-            profileNavigation(navController)
+                profileNavigation(navController)
 
-            tournamentsNavGraph(navController)
-        }
+                tournamentsNavGraph(navController)
+            }
+
+        if(appUiState.isLoading)
+            LoadingScreen()
     }
 }

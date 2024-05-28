@@ -22,58 +22,61 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.R
+import com.piriurna.tournamentmanager.android.common.components.LoadingScreen
 
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel,
 ) {
     val uiState = viewModel.uiState.value
-    
-    
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        
-        TextField(
-            value = uiState.email,
-            onValueChange = viewModel::onEmailChange,
-            label = { Text(text = stringResource(R.string.email)) }
-        )
+    if(uiState.isLoading) {
+        LoadingScreen()
+    } else {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-        TextField(
-            value = uiState.password,
-            onValueChange = viewModel::onPasswordChange,
-            visualTransformation = PasswordVisualTransformation(),
-            label = { Text(text = stringResource(R.string.password)) }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = viewModel::onAuthenticate) {
-            Text(text = stringResource(R.string.login))
-        }
-        Spacer(modifier = Modifier.height(16.dp))
+            TextField(
+                value = uiState.email,
+                onValueChange = viewModel::onEmailChange,
+                label = { Text(text = stringResource(R.string.email)) }
+            )
 
-        Text(
-            modifier = Modifier.clickable(onClick = viewModel::goToRegister),
-            text = buildAnnotatedString {
-                append(stringResource(R.string.don_t_have_an_account))
-
-                append(" ")
-
-                withStyle(
-                    SpanStyle(
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold,
-                        textDecoration = TextDecoration.Underline
-                    )
-                ) {
-                    append(stringResource(id = R.string.register))
-                }
+            TextField(
+                value = uiState.password,
+                onValueChange = viewModel::onPasswordChange,
+                visualTransformation = PasswordVisualTransformation(),
+                label = { Text(text = stringResource(R.string.password)) }
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(onClick = viewModel::onAuthenticate) {
+                Text(text = stringResource(R.string.login))
             }
-        )
+            Spacer(modifier = Modifier.height(16.dp))
 
-        if(uiState.error != null)
-            Text(text = uiState.error)
+            Text(
+                modifier = Modifier.clickable(onClick = viewModel::goToRegister),
+                text = buildAnnotatedString {
+                    append(stringResource(R.string.don_t_have_an_account))
+
+                    append(" ")
+
+                    withStyle(
+                        SpanStyle(
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold,
+                            textDecoration = TextDecoration.Underline
+                        )
+                    ) {
+                        append(stringResource(id = R.string.register))
+                    }
+                }
+            )
+
+            if(uiState.error != null)
+                Text(text = uiState.error)
+        }
     }
 }
