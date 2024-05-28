@@ -16,4 +16,6 @@
     <string name="login">Login</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="welcome">Welcome</string>
+    <string name="create_new_tournament">Create new Tournament</string>
 </resources>

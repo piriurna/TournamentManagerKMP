@@ -7,6 +7,7 @@ import com.piriurna.tournamentmanager.android.team.navigation.TeamNavigation.Cre
 import com.piriurna.tournamentmanager.fifacups.domain.models.Team
 import com.piriurna.tournamentmanager.fifacups.domain.models.Tournament
 import com.piriurna.tournamentmanager.fifacups.domain.models.User
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetLoggedInUserUseCase
 import com.piriurna.tournamentmanager.login.domain.usecases.AppResult
 import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetNextTournamentForUserUseCase
 import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetUserTeamUseCase
@@ -24,14 +25,43 @@ data class DashboardUiState(
 class DashboardViewModel(
     private val getNextTournamentForUserUseCase: GetNextTournamentForUserUseCase,
     private val getUserTeamUseCase: GetUserTeamUseCase,
+    private val getLoggedInUserUseCase: GetLoggedInUserUseCase
 ): BaseViewModel<DashboardUiState>() {
     override fun initialState() = DashboardUiState()
 
 
     init {
         viewModelScope.launch {
+            getUser()
             getNextTournament()
             getUserTeam()
+        }
+    }
+
+    private suspend fun getUser() {
+        viewModelScope.launch {
+            getLoggedInUserUseCase().collectLatest {
+                when(it) {
+                    is AppResult.Loading -> {
+                        updateUiState(uiState.value.copy(
+                            isLoading = true
+                        ))
+                    }
+
+                    is AppResult.Error -> {
+                        updateUiState(uiState.value.copy(
+                            isLoading = false
+                        ))
+                    }
+
+                    is AppResult.Success -> {
+                        updateUiState(uiState.value.copy(
+                            isLoading = false,
+                            loggedInUser = it.data
+                        ))
+                    }
+                }
+            }
         }
     }
 
@@ -98,6 +128,10 @@ class DashboardViewModel(
     }
 
     fun goToCreateTeamPage() {
+        navigateToDestination(CreateTeamHomePageDestination)
+    }
+
+    fun goToCreateTournamentPage() {
         navigateToDestination(CreateTeamHomePageDestination)
     }
 }

@@ -1,20 +1,24 @@
 package com.piriurna.tournamentmanager.android.dashboard.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.R
+import com.piriurna.tournamentmanager.android.common.components.ButtonWithIconAndText
 import com.piriurna.tournamentmanager.android.team.components.TeamInfoCard
 import com.piriurna.tournamentmanager.android.team.models.toUiData
 import com.piriurna.tournamentmanager.android.tournament.components.TournamentInfoCard
@@ -29,18 +33,27 @@ fun DashboardScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = 16.dp),
+            .padding(horizontal = 16.dp)
+            .padding(vertical = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        if(uiState.loggedInUser != null) {
-            Text(text = buildAnnotatedString {
-                withStyle(MaterialTheme.typography.headlineMedium.toSpanStyle()) {
-                    append("Welcome")
+        Text(
+            text = buildAnnotatedString {
+                withStyle(
+                    MaterialTheme.typography.headlineLarge.toSpanStyle()
+                        .copy(color = MaterialTheme.colorScheme.primary),
+                ) {
+                    append(stringResource(R.string.welcome))
+                    append(", ")
                 }
+
                 withStyle(MaterialTheme.typography.headlineLarge.toSpanStyle()) {
-                    append(uiState.loggedInUser.nickname)
+                    append(uiState.loggedInUser?.nickname)
                 }
-            })
-        }
+            },
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1
+        )
         if(uiState.myTeam != null) {
             Text(text = stringResource(R.string.my_team))
             Spacer(modifier = Modifier.height(8.dp))
@@ -49,6 +62,14 @@ fun DashboardScreen(
                 verticalSpacing = 12.dp
             )
             Spacer(modifier = Modifier.height(16.dp))
+        } else {
+            ButtonWithIconAndText(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = viewModel::goToCreateTeamPage,
+                icon = painterResource(id = R.drawable.ic_team),
+                text = stringResource(id = R.string.create_a_new_team)
+            )
         }
 
         if(uiState.nextTournament != null) {
@@ -59,9 +80,14 @@ fun DashboardScreen(
                 onAction = {  },
                 verticalSpacing = 12.dp
             )
-        }
-        Button(onClick = viewModel::goToCreateTeamPage) {
-            Text(text = stringResource(R.string.create_a_new_team))
+        } else {
+            ButtonWithIconAndText(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                onClick = viewModel::goToCreateTournamentPage,
+                icon = painterResource(id = R.drawable.ic_tournament),
+                text = stringResource(id = R.string.create_new_tournament)
+            )
         }
     }
 }

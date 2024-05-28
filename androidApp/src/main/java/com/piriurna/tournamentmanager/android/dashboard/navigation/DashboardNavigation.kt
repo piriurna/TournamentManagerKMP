@@ -18,7 +18,8 @@ fun NavGraphBuilder.dashboardNavigation(navController: NavController) {
         DashboardScreen(viewModel = customViewModelFactory(navController = navController) {
             DashboardViewModel(
                 (context.applicationContext as MyApplication).getNextTournamentForUserUseCase,
-                (context.applicationContext as MyApplication).getUserTeamUseCase
+                (context.applicationContext as MyApplication).getUserTeamUseCase,
+                (context.applicationContext as MyApplication).getLoggedInUserUseCase,
             )
         })
     }
