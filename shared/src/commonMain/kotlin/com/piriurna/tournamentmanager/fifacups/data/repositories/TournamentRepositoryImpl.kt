@@ -47,6 +47,14 @@ class TournamentRepositoryImpl(
         }
     }
 
+    override suspend fun getUserTeamList(): Result<List<Team>> {
+        return when(val response = fifaCupsApi.getUserTeams()) {
+            is ApiResult.Success -> Result.success(response.result!!.map { it.toTeam() })
+
+            is ApiResult.Error -> Result.failure(response.exception)
+        }
+    }
+
     override suspend fun getTournamentsForUser(): Result<List<Tournament>> {
         return when(val response = fifaCupsApi.getTournamentsForUser()) {
             is ApiResult.Success -> Result.success(response.result?.tournaments?.map { it.toTournament() }?: emptyList())

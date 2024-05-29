@@ -8,23 +8,23 @@ import com.piriurna.tournamentmanager.fifacups.domain.models.Team
 import com.piriurna.tournamentmanager.fifacups.domain.models.Tournament
 import com.piriurna.tournamentmanager.fifacups.domain.models.User
 import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetLoggedInUserUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetTournamentsUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetUserTeamListUseCase
 import com.piriurna.tournamentmanager.login.domain.usecases.AppResult
-import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetNextTournamentForUserUseCase
-import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetUserTeamUseCase
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 data class DashboardUiState(
     val isLoading: Boolean = false,
-    val nextTournament: Tournament? = null,
-    val myTeam: Team? = null,
+    val tournaments: List<Tournament> = emptyList(),
+    val teams: List<Team> = emptyList(),
     val loggedInUser: User? = null
 ): UiState
 
 
 class DashboardViewModel(
-    private val getNextTournamentForUserUseCase: GetNextTournamentForUserUseCase,
-    private val getUserTeamUseCase: GetUserTeamUseCase,
+    private val getTournamentsUseCase: GetTournamentsUseCase,
+    private val getUserTeamListUseCase: GetUserTeamListUseCase,
     private val getLoggedInUserUseCase: GetLoggedInUserUseCase
 ): BaseViewModel<DashboardUiState>() {
     override fun initialState() = DashboardUiState()
@@ -66,12 +66,12 @@ class DashboardViewModel(
     }
 
     private suspend fun getNextTournament() {
-        getNextTournamentForUserUseCase().collectLatest {
+        getTournamentsUseCase().collectLatest {
             when(it) {
                 is AppResult.Success -> {
                     updateUiState(
                         uiState.value.copy(
-                            nextTournament = it.data,
+                            tournaments = it.data,
                             isLoading = false
                         )
                     )
@@ -97,12 +97,12 @@ class DashboardViewModel(
     }
 
     private suspend fun getUserTeam() {
-        getUserTeamUseCase().collectLatest {
+        getUserTeamListUseCase().collectLatest {
             when(it) {
                 is AppResult.Success -> {
                     updateUiState(
                         uiState.value.copy(
-                            myTeam = it.data,
+                            teams = it.data,
                             isLoading = false
                         )
                     )

@@ -80,11 +80,11 @@ private fun DashboardScreenContent(
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
-        if(uiState.myTeam != null) {
+        if(uiState.teams.isNotEmpty()) {
             Text(text = stringResource(R.string.my_team))
             Spacer(modifier = Modifier.height(8.dp))
             TeamInfoCard(
-                team = uiState.myTeam.toUiData(uiState.loggedInUser?.id),
+                team = uiState.teams.first().toUiData(uiState.loggedInUser?.id),
                 verticalSpacing = 12.dp
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -98,11 +98,11 @@ private fun DashboardScreenContent(
             )
         }
 
-        if(uiState.nextTournament != null) {
+        if(uiState.tournaments.isNotEmpty()) {
             Text(text = stringResource(R.string.next_tournament))
             Spacer(modifier = Modifier.height(8.dp))
             TournamentInfoCard(
-                tournament = uiState.nextTournament.toUiData(),
+                tournament = uiState.tournaments.first().toUiData(),
                 onAction = {  },
                 verticalSpacing = 12.dp
             )
@@ -118,12 +118,14 @@ private fun DashboardScreenContent(
     }
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
 private fun DashboardScreenPreview() {
     DashboardScreenContent(
         uiState = DashboardUiState(),
-        goToCreateTeamPage = { /*TODO*/ },
-        goToCreateTournamentPage = {  }
+        goToCreateTeamPage = { },
+        goToCreateTournamentPage = { }
     )
 }

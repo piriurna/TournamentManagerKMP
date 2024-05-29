@@ -23,6 +23,8 @@ interface TournamentRepository {
 
     suspend fun getUserTeam(): Result<Team?>
 
+    suspend fun getUserTeamList(): Result<List<Team>>
+
 
     //=======================
     // Tournament

@@ -9,6 +9,8 @@ import com.piriurna.tournamentmanager.fifacups.domain.usecases.CreateTeamUseCase
 import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetLoggedInUserUseCase
 import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetNextTournamentForUserUseCase
 import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetTournamentsByDateUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetTournamentsUseCase
+import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetUserTeamListUseCase
 import com.piriurna.tournamentmanager.fifacups.domain.usecases.GetUserTeamUseCase
 import com.piriurna.tournamentmanager.firebase.data.api.FirebaseApiImpl
 import com.piriurna.tournamentmanager.firebase.data.repositories.FirebaseRepositoryImpl
@@ -50,8 +52,14 @@ class MyApplication: Application() {
     val getNextTournamentForUserUseCase: GetNextTournamentForUserUseCase by lazy {
         GetNextTournamentForUserUseCase(tournamentRepository)
     }
+    val getTournamentsUseCase: GetTournamentsUseCase by lazy {
+        GetTournamentsUseCase(tournamentRepository)
+    }
     val getUserTeamUseCase: GetUserTeamUseCase by lazy {
         GetUserTeamUseCase(tournamentRepository)
+    }
+    val getUserTeamListUseCase: GetUserTeamListUseCase by lazy {
+        GetUserTeamListUseCase(tournamentRepository)
     }
     val getTournamentsByDateUseCase: GetTournamentsByDateUseCase by lazy {
         GetTournamentsByDateUseCase(tournamentRepository)
