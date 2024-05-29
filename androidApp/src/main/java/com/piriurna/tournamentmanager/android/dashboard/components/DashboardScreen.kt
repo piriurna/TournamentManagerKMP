@@ -16,9 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.piriurna.tournamentmanager.android.R
 import com.piriurna.tournamentmanager.android.common.components.ButtonWithIconAndText
+import com.piriurna.tournamentmanager.android.common.components.LoadingScreen
 import com.piriurna.tournamentmanager.android.team.components.TeamInfoCard
 import com.piriurna.tournamentmanager.android.team.models.toUiData
 import com.piriurna.tournamentmanager.android.tournament.components.TournamentInfoCard
@@ -30,6 +32,30 @@ fun DashboardScreen(
     viewModel: DashboardViewModel
 ) {
     val uiState = viewModel.uiState.value
+
+    when {
+        uiState.isLoading -> {
+            LoadingScreen()
+        }
+
+        else -> {
+            DashboardScreenContent(
+                modifier = modifier,
+                uiState = uiState,
+                goToCreateTeamPage = viewModel::goToCreateTeamPage,
+                goToCreateTournamentPage = viewModel::goToCreateTournamentPage
+            )
+        }
+    }
+}
+
+@Composable
+private fun DashboardScreenContent(
+    modifier: Modifier = Modifier,
+    uiState: DashboardUiState,
+    goToCreateTeamPage: () -> Unit,
+    goToCreateTournamentPage: () -> Unit,
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -48,7 +74,7 @@ fun DashboardScreen(
                 }
 
                 withStyle(MaterialTheme.typography.headlineLarge.toSpanStyle()) {
-                    append(uiState.loggedInUser?.nickname)
+                    if(uiState.loggedInUser != null) append(uiState.loggedInUser.nickname)
                 }
             },
             overflow = TextOverflow.Ellipsis,
@@ -66,7 +92,7 @@ fun DashboardScreen(
             ButtonWithIconAndText(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = viewModel::goToCreateTeamPage,
+                onClick = goToCreateTeamPage,
                 icon = painterResource(id = R.drawable.ic_team),
                 text = stringResource(id = R.string.create_a_new_team)
             )
@@ -84,10 +110,20 @@ fun DashboardScreen(
             ButtonWithIconAndText(
                 modifier = Modifier
                     .fillMaxWidth(),
-                onClick = viewModel::goToCreateTournamentPage,
+                onClick = goToCreateTournamentPage,
                 icon = painterResource(id = R.drawable.ic_tournament),
                 text = stringResource(id = R.string.create_new_tournament)
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DashboardScreenPreview() {
+    DashboardScreenContent(
+        uiState = DashboardUiState(),
+        goToCreateTeamPage = { /*TODO*/ },
+        goToCreateTournamentPage = {  }
+    )
 }
